@@ -29,6 +29,7 @@ public class blackJack extends JPanel {
         statusLabel.setForeground(Color.GREEN);
         add(statusLabel, BorderLayout.NORTH);
 
+        //Testing out the commit feature with git and github
 	}
 
 }
