@@ -51,7 +51,7 @@ public class popBoiApp extends JFrame {
         // Add screens
         mainPanel.add(createMainMenu(), "MainMenu");
         mainPanel.add(new blackJack(this), "Blackjack");
-        //TODO
+        mainPanel.add(new Inventory(this), "Inventory");        //TODO
 
         getContentPane().add(mainPanel);
         setVisible(true);
