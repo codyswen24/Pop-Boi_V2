@@ -80,6 +80,9 @@ public class popBoiApp extends JFrame {
         
         JButton blackjackButton = new JButton("Blackjack");
         blackjackButton.addActionListener(e -> showScreen("Blackjack"));
+        
+        JButton btnNewButton = new JButton("Stats");
+        controlPanel.add(btnNewButton);
         controlPanel.add(blackjackButton);
         
         JButton inventoryButton = new JButton("Inventory");
