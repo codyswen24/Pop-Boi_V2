@@ -47,7 +47,16 @@ public class blackJack extends JPanel {
         add(btnBack);
         btnBack.addActionListener(e -> app.showScreen("MainMenu"));
 	}
-
 	
+	public JLabel createCardLabel(card card) {
+	    ImageIcon icon = new ImageIcon(getClass().getResource(card.getImagePath()));
+
+	    //TODO
+	  //image scaling adjust later
+	    Image scaled = icon.getImage().getScaledInstance(120, 180, Image.SCALE_SMOOTH);
+	    icon = new ImageIcon(scaled);
+
+	    return new JLabel(icon);
+	}
 	
 }
