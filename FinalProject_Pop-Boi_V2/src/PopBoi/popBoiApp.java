@@ -2,7 +2,7 @@ package PopBoi;
 
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;
-//Hello there
+//howdy
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
