@@ -4,11 +4,13 @@ public class card {
 	private String suit;
 	private String rank;
 	private int value;
-	
+	private String imagePath;
+
 	public card (String suit, String rank, int value) {
 		this.suit = suit;
 		this.rank = rank;
 		this.value = value;
+		this.imagePath = "/PopBoi/cardsImages/" + rank + "_of_" + suit + ".jpg";
 	}
 
 	/**
@@ -31,6 +33,13 @@ public class card {
 	public int getValue() {
 		return value;
 	}
+	
+	/**
+	 * @return the value
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
 
 	@Override
 	public String toString() {
@@ -38,3 +47,4 @@ public class card {
 	}
 
 }
+
