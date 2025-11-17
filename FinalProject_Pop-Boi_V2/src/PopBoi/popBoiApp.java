@@ -78,12 +78,13 @@ public class popBoiApp extends JFrame {
         controlPanel.setBackground(Color.decode("#0F3D0F"));
         menu.add(controlPanel, BorderLayout.NORTH);
         
+        JButton StatsButton = new JButton("Stats");
+        StatsButton.addActionListener (e -> showScreen("MainMenu"));
+        controlPanel.add(StatsButton);
+        
         JButton blackjackButton = new JButton("Blackjack");
         blackjackButton.addActionListener(e -> showScreen("Blackjack"));
-        
-        JButton btnNewButton = new JButton("Stats");
-        controlPanel.add(btnNewButton);
-        controlPanel.add(blackjackButton);
+        controlPanel.add(blackjackButton);      
         
         JButton inventoryButton = new JButton("Inventory");
         inventoryButton.addActionListener(e -> showScreen("Inventory"));
