@@ -2,7 +2,6 @@ package PopBoi;
 
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;
-//Hello there
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -51,7 +50,7 @@ public class popBoiApp extends JFrame {
         // Add screens
         mainPanel.add(createMainMenu(), "MainMenu");
         mainPanel.add(new blackJack(this), "Blackjack");
-        mainPanel.add(new Inventory(this), "Inventory");        //TODO
+        mainPanel.add(new Inventory(this), "Inventory");
 
         getContentPane().add(mainPanel);
         setVisible(true);
@@ -60,6 +59,7 @@ public class popBoiApp extends JFrame {
 	/**
 	 * 
 	 * @param name
+	 * @author codys
 	 */
 	public void showScreen(String name) {
         cardLayout.show(mainPanel, name);
@@ -102,5 +102,3 @@ public class popBoiApp extends JFrame {
 
 	
 }
-
-
