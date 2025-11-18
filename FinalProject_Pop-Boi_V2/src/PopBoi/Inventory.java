@@ -3,6 +3,7 @@ package PopBoi;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,22 +97,25 @@ public class Inventory extends JPanel {
         });
 
         // ----- ADD CATEGORY FILTER BUTTONS -----
+        Font newFont = new Font("Arial", Font.BOLD, 9);
         int x = 33;
         for (Category c : Category.values()) {
             JButton btn = new JButton(c.name());
-            btn.setBounds(x, 90, 110, 30);
+            btn.setBounds(x, 90, 110, 20);
             btn.addActionListener(e -> filterByCategory(c));
+            btn.setFont(newFont);
             add(btn);
             x += 115;
         }
         
         // ---- ADD "ALL" BUTTON ----
         JButton allButton = new JButton("ALL");
-        allButton.setBounds(x, 90, 110, 30);
+        allButton.setBounds(x, 90, 110, 20);
         allButton.addActionListener(e -> {
             refreshList(allItems);
             descriptionLabel.setText("Showing all items.");
         });
+        allButton.setFont(newFont);
         add(allButton);
 
         // ----- BACK / OTHER BUTTONS -----
