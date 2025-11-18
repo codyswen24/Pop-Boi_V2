@@ -2,7 +2,7 @@ package PopBoi;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
+//Hi there!
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
