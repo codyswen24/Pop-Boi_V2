@@ -20,45 +20,99 @@ public class blackJack extends JPanel {
 	 * Create the frame.
 	 */
 	public blackJack(popBoiApp app) {
+		
+		createControlPanel(app);
+        
+        createHouseAndUserPanels();
+        
+        
+	}
+
+	private void createHouseAndUserPanels() {
+		JPanel panel = new JPanel();
+        add(panel, BorderLayout.CENTER);
+        panel.setLayout(new GridLayout(2, 0, 0, 0));
+        
+        JPanel housePanel = new JPanel();
+        panel.add(housePanel);
+        housePanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel deckPanel = new JPanel();
+        deckPanel.setBackground(Color.decode("#0A2F0A"));
+        housePanel.add(deckPanel, BorderLayout.EAST);
+        
+        JPanel houseCardPanel = new JPanel();
+        houseCardPanel.setBackground(Color.decode("#0A2F0A"));
+        housePanel.add(houseCardPanel, BorderLayout.CENTER);
+        
+        JPanel statusLabel = new JPanel();
+        statusLabel.setBackground(Color.decode("#0A2F0A"));
+        housePanel.add(statusLabel, BorderLayout.SOUTH);
+        
+        JPanel playerPanel = new JPanel();
+        panel.add(playerPanel);
+        playerPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel playerControls = new JPanel();
+        playerControls.setBackground(Color.decode("#0A2F0A"));
+        playerPanel.add(playerControls, BorderLayout.SOUTH);
+        
+        JButton btnHit = new JButton("Hit");
+        playerControls.add(btnHit);
+        
+        JButton btnStand = new JButton("Stand");
+        playerControls.add(btnStand);
+        
+        JPanel playerCardPanel = new JPanel();
+        playerCardPanel.setBackground(Color.decode("#0A2F0A"));
+        playerPanel.add(playerCardPanel, BorderLayout.CENTER);
+        
+        JLabel lblNewLabel = new JLabel("Money: $100");
+        lblNewLabel.setForeground(new Color(0, 255, 0));
+        add(lblNewLabel, BorderLayout.SOUTH);
+	}
+
+	private void createControlPanel(popBoiApp app) {
 		this.app = app;
         setBackground(Color.decode("#0A2F0A"));
         setLayout(new BorderLayout(0, 0));
         
-        JPanel panel = new JPanel();
-        add(panel, BorderLayout.NORTH);
-        panel.setLayout(new GridLayout(2, 1, 0, 0));
+        JPanel controlPanel = new JPanel();
+        add(controlPanel, BorderLayout.NORTH);
+        controlPanel.setLayout(new GridLayout(2, 1, 0, 0));
         
-        JPanel panel_1 = new JPanel();
-        panel.add(panel_1);
-        panel_1.setLayout(new GridLayout(1, 5, 0, 0));
+        JPanel buttonPanel = new JPanel();
+        controlPanel.add(buttonPanel);
+        buttonPanel.setLayout(new GridLayout(1, 5, 0, 0));
         
         JButton btnStats = new JButton("Stats");
         btnStats.addActionListener(e -> app.showScreen("MainMenu"));
-        panel_1.add(btnStats);
+        buttonPanel.add(btnStats);
         
         JButton btnBlackJack = new JButton("BlackJack");
-        panel_1.add(btnBlackJack);
+        buttonPanel.add(btnBlackJack);
         
         JButton btnInventory = new JButton("Inventory");
         btnInventory.addActionListener(e -> app.showScreen("Inventory"));
-        panel_1.add(btnInventory);
+        buttonPanel.add(btnInventory);
         
         JButton btnChatBot = new JButton("Chat-Bot");
-        panel_1.add(btnChatBot);
+        buttonPanel.add(btnChatBot);
         
         JButton btnMap = new JButton("Map");
-        panel_1.add(btnMap);
+        buttonPanel.add(btnMap);
         
-        JPanel panel_2 = new JPanel();
-        panel.add(panel_2);
-        panel_2.setLayout(new GridLayout(1, 0, 0, 0));
+        JPanel titlePanel = new JPanel();
+        controlPanel.add(titlePanel);
+        titlePanel.setLayout(new GridLayout(1, 0, 0, 0));
         
         JLabel lblTitle = new JLabel("POP-BOI BLACKJACK");
         lblTitle.setOpaque(true);
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         lblTitle.setBackground(new Color(10, 47, 10));
         lblTitle.setForeground(Color.GREEN);
-        panel_2.add(lblTitle);
+        titlePanel.add(lblTitle);
+
 	}
 	
 	public JLabel createCardLabel(card card) {
@@ -70,6 +124,24 @@ public class blackJack extends JPanel {
 	    icon = new ImageIcon(scaled);
 	    return new JLabel(icon);
 	}
+	
+	private void updateUI() {
+		
+	}
+	
+	private void startNewGame() {
+		deck deck = new deck();
+		hand playerHand = new hand();
+		hand houseHand = new hand();
+		
+		houseHand.add(deck.drawCard());
+		houseHand.add(deck.drawCard());
+		
+		playerHand.add(deck.drawCard());
+		playerHand.add(deck.drawCard());
+	}
+	
+	
 	
 	
 	
