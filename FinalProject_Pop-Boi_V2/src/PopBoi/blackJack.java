@@ -8,13 +8,13 @@ import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import net.miginfocom.swing.MigLayout;
 
 public class blackJack extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private popBoiApp app;
-	private JLabel statusLabel;
 
 	/**
 	 * Create the frame.
@@ -22,41 +22,55 @@ public class blackJack extends JPanel {
 	public blackJack(popBoiApp app) {
 		this.app = app;
         setBackground(Color.decode("#0A2F0A"));
-        SpringLayout springLayout = new SpringLayout();
-        setLayout(springLayout);
+        setLayout(new BorderLayout(0, 0));
         
-        statusLabel = new JLabel("Welcome to Pip-Boy Blackjack!", SwingConstants.CENTER);
-        springLayout.putConstraint(SpringLayout.NORTH, statusLabel, 5, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, statusLabel, 155, SpringLayout.WEST, this);
-        statusLabel.setForeground(Color.GREEN);
-        add(statusLabel);
+        JPanel panel = new JPanel();
+        add(panel, BorderLayout.NORTH);
+        panel.setLayout(new GridLayout(2, 1, 0, 0));
         
-        JButton btnHit = new JButton("Hit");
-        springLayout.putConstraint(SpringLayout.WEST, btnHit, 0, SpringLayout.WEST, statusLabel);
-        add(btnHit);
+        JPanel panel_1 = new JPanel();
+        panel.add(panel_1);
+        panel_1.setLayout(new GridLayout(1, 5, 0, 0));
         
-        JButton btnFold = new JButton("Fold");
-        springLayout.putConstraint(SpringLayout.SOUTH, btnFold, -28, SpringLayout.SOUTH, this);
-        springLayout.putConstraint(SpringLayout.NORTH, btnHit, 0, SpringLayout.NORTH, btnFold);
-        springLayout.putConstraint(SpringLayout.EAST, btnFold, 0, SpringLayout.EAST, statusLabel);
-        add(btnFold);
+        JButton btnStats = new JButton("Stats");
+        btnStats.addActionListener(e -> app.showScreen("MainMenu"));
+        panel_1.add(btnStats);
         
-        JButton btnBack = new JButton("Back");
-        springLayout.putConstraint(SpringLayout.NORTH, btnBack, 10, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, btnBack, 10, SpringLayout.WEST, this);
-        add(btnBack);
-        btnBack.addActionListener(e -> app.showScreen("MainMenu"));
+        JButton btnBlackJack = new JButton("BlackJack");
+        panel_1.add(btnBlackJack);
+        
+        JButton btnInventory = new JButton("Inventory");
+        btnInventory.addActionListener(e -> app.showScreen("Inventory"));
+        panel_1.add(btnInventory);
+        
+        JButton btnChatBot = new JButton("Chat-Bot");
+        panel_1.add(btnChatBot);
+        
+        JButton btnMap = new JButton("Map");
+        panel_1.add(btnMap);
+        
+        JPanel panel_2 = new JPanel();
+        panel.add(panel_2);
+        panel_2.setLayout(new GridLayout(1, 0, 0, 0));
+        
+        JLabel lblTitle = new JLabel("POP-BOI BLACKJACK");
+        lblTitle.setOpaque(true);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitle.setBackground(new Color(10, 47, 10));
+        lblTitle.setForeground(Color.GREEN);
+        panel_2.add(lblTitle);
 	}
 	
 	public JLabel createCardLabel(card card) {
 	    ImageIcon icon = new ImageIcon(getClass().getResource(card.getImagePath()));
 
 	    //TODO
-	  //image scaling adjust later
+	    //adjust image scaling later
 	    Image scaled = icon.getImage().getScaledInstance(120, 180, Image.SCALE_SMOOTH);
 	    icon = new ImageIcon(scaled);
-
 	    return new JLabel(icon);
 	}
+	
+	
 	
 }
