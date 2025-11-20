@@ -90,9 +90,9 @@ public class Map extends JPanel {
 	 * this loads the map images from Images/MapImages
 	 */
 	private void loadImages() {
-		mapImage = new ImageIcon[] { loadIcon("/Images/taylorsvilleMapBig.jpg", "bigMap"),
-				loadIcon("/Images/taylorsvilleMapMed.jpg", "medMap"),
-				loadIcon("/Images/taylorsvilleMapSmall.jpg", "smallMap") };
+		mapImage = new ImageIcon[] { loadIcon("/PopBoi/Images/taylorsvilleMapBig.jpg", "bigMap"),
+				loadIcon("/PopBoi/Images/taylorsvilleMapMed.jpg", "medMap"),
+				loadIcon("/PopBoi/Images/taylorsvilleMapSmall.jpg", "smallMap") };
 	}
 
 	/**
