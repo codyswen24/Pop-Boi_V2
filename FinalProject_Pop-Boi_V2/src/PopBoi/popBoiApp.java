@@ -77,7 +77,7 @@ public class popBoiApp extends JFrame {
 	}
 
 	/**
-	 * Creats the main menu of buttons at the top of the GUI that will switch
+	 * Creates the main menu of buttons at the top of the GUI that will switch
 	 * between each panel
 	 * 
 	 * @author SpencerS
