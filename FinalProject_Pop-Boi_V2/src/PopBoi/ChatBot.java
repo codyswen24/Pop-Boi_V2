@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * the superclass chatbot will have an array of string to randomly output said
+ * strings to the user
+ * 
+ * @author SpencerS
+ */
 public class ChatBot extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -13,6 +19,11 @@ public class ChatBot extends JPanel {
 	protected JTextField inputField;
 	protected Random rand = new Random();
 
+	/**
+	 * creats the object ChatBot
+	 * 
+	 * @param app
+	 */
 	public ChatBot(popBoiApp app) {
 		this.app = app;
 
@@ -28,19 +39,32 @@ public class ChatBot extends JPanel {
 	// =============== OVERRIDABLE METHODS =================
 	// =====================================================
 
-	/** Subclasses override this with custom responses */
+	/**
+	 * gets all the Strings and puts it into an array
+	 * 
+	 * @return String[]
+	 */
 	protected String[] getResponses() {
 		return new String[] { "Hello there!", "How can I help you?", "Interesting...", "Tell me more!",
 				"I'm not sure about that.", "Haha, that's funny!", "Good question!" };
 	}
 
-	/** Subclasses can override to create smarter logic */
+	/**
+	 * to output the random responses
+	 * 
+	 * @param userInput
+	 * @return
+	 */
 	protected String generateResponse(String userInput) {
 		String[] responses = getResponses();
 		return responses[rand.nextInt(responses.length)];
 	}
 
-	/** Subclasses can override for different UI title */
+	/**
+	 * the title of the chat bot
+	 * 
+	 * @return ChatBot
+	 */
 	protected String getTitle() {
 		return "ChatBot";
 	}
@@ -49,6 +73,9 @@ public class ChatBot extends JPanel {
 	// ===================== UI SETUP =======================
 	// =====================================================
 
+	/**
+	 * the title
+	 */
 	private void createTitleBar() {
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground(Color.decode("#0A2F0A"));
@@ -62,6 +89,9 @@ public class ChatBot extends JPanel {
 		add(bar, BorderLayout.NORTH);
 	}
 
+	/**
+	 * the input panel
+	 */
 	private void createChatArea() {
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);
@@ -71,8 +101,11 @@ public class ChatBot extends JPanel {
 		add(new JScrollPane(chatArea), BorderLayout.CENTER);
 	}
 
+	/**
+	 * makes the field that allows the user to type input
+	 */
 	private void createInputField() {
-		// Wrap the JTextField in a JPanel to control height
+
 		JPanel inputPanel = new JPanel(new BorderLayout());
 		inputPanel.setBackground(new Color(20, 60, 20));
 
@@ -81,9 +114,8 @@ public class ChatBot extends JPanel {
 		inputField.setForeground(Color.GREEN);
 		inputField.setCaretColor(Color.GREEN);
 
-		// Make the input field taller
-		inputField.setPreferredSize(new java.awt.Dimension(0, 40)); // height = 40 pixels
-		inputField.setFont(inputField.getFont().deriveFont(16f)); // optional: larger font
+		inputField.setPreferredSize(new java.awt.Dimension(0, 40));
+		inputField.setFont(inputField.getFont().deriveFont(16f));
 
 		inputField.addActionListener(e -> processInput());
 
@@ -95,6 +127,9 @@ public class ChatBot extends JPanel {
 	// ================== INPUT HANDLING ====================
 	// =====================================================
 
+	/**
+	 * will process the input and generate a random response.
+	 */
 	private void processInput() {
 		String text = inputField.getText().trim();
 		if (text.isEmpty())
@@ -107,6 +142,11 @@ public class ChatBot extends JPanel {
 		chatArea.append(getBotName() + ": " + reply + "\n");
 	}
 
+	/**
+	 * the name of the bot in the bot channels
+	 * 
+	 * @return Bot
+	 */
 	protected String getBotName() {
 		// Default is "Bot", subclasses can override
 		return "Bot";
