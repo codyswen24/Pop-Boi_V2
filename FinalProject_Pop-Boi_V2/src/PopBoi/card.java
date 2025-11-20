@@ -10,7 +10,7 @@ public class card {
 		this.suit = suit;
 		this.rank = rank;
 		this.value = value;
-		this.imagePath = "/PopBoi/cardsImages/" + rank + "_of_" + suit + ".jpg";
+		this.imagePath = "/Images/" + rank + "_of_" + suit + ".jpg";
 	}
 
 	/**
@@ -47,4 +47,3 @@ public class card {
 	}
 
 }
-
