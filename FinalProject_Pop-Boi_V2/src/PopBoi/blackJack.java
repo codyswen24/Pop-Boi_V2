@@ -1,14 +1,9 @@
 package PopBoi;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-//import net.miginfocom.swing.MigLayout;
+
 
 /**
  * This class is the main panel for the game blackjack and contains all the UI and game logic for the game
@@ -18,8 +13,6 @@ import javax.swing.border.EmptyBorder;
 public class blackJack extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private popBoiApp app;
 	private deck deck;
 	   
 	private JPanel housePanel;
@@ -38,7 +31,6 @@ public class blackJack extends JPanel {
 	 * Create the frame.
 	 */
 	public blackJack(popBoiApp app) {
-		this.app = app;
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
