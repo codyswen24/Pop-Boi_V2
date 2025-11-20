@@ -52,7 +52,15 @@ public class popBoiApp extends JFrame {
 		mainPanel.add(new blackJack(this), "Blackjack");
 		mainPanel.add(new Inventory(this), "Inventory");
 		mainPanel.add(new Map(this), "Map");
-		mainPanel.add(new ChatBot(this), "ChatBot");
+		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
+		mainPanel.add(new Deathclaw(this), "Deathclaw");
+		mainPanel.add(new LibertyPrime(this), "LibertyPrime");
+
+		Inventory inventoryPanel = new Inventory(this);
+		Dogmeat dogmeatPanel = new Dogmeat(this, inventoryPanel);
+
+		mainPanel.add(inventoryPanel, "Inventory");
+		mainPanel.add(dogmeatPanel, "Dogmeat");
 
 		getContentPane().add(mainPanel);
 		setVisible(true);
@@ -60,6 +68,7 @@ public class popBoiApp extends JFrame {
 
 	/**
 	 * Switches the panels when the buttons are clicked
+	 * 
 	 * @param name
 	 * @author codys
 	 */
@@ -68,7 +77,9 @@ public class popBoiApp extends JFrame {
 	}
 
 	/**
-	 * Creats the main menu of buttons at the top of the GUI that will switch between each panel
+	 * Creats the main menu of buttons at the top of the GUI that will switch
+	 * between each panel
+	 * 
 	 * @author SpencerS
 	 * @author codys
 	 */
@@ -91,7 +102,7 @@ public class popBoiApp extends JFrame {
 		controlPanel.add(inventoryButton);
 
 		JButton chatBotButton = new JButton("Chat-Bot");
-		chatBotButton.addActionListener(e -> showScreen("ChatBot"));
+		chatBotButton.addActionListener(e -> showScreen("ChatSelect"));
 		controlPanel.add(chatBotButton);
 
 		JButton mapButton = new JButton("Map");
