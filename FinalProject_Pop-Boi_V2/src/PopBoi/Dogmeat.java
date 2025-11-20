@@ -52,7 +52,7 @@ public class Dogmeat extends ChatBot {
 		// 10% chance Dogmeat brings 10mm Ammo
 		if (chance < 0.1) {
 			if (inventory != null) {
-				inventory.addItem("10mm Ammo", "Standard ammunition for many pistols.", Inventory.Category.AMMO);
+				inventory.addItem("10mm Ammo", "Standard ammunition for many pistols.", Inventory.Category.WEAPON);
 			}
 			return "Brings you ammo, Bark!";
 		}
@@ -60,7 +60,7 @@ public class Dogmeat extends ChatBot {
 		else if (chance < 0.2) {
 			if (inventory != null) {
 				inventory.addItem("5.56mm Ammo", "Rifle ammunition used in many assault rifles.",
-						Inventory.Category.AMMO);
+						Inventory.Category.WEAPON);
 			}
 			return "Brings you ammo, Bark!";
 		}
