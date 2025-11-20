@@ -3,10 +3,20 @@ package PopBoi;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The panel that will have the user pick which chat they want
+ * 
+ * @author SpencerS
+ */
 public class ChatSelectionPanel extends JPanel {
 
 	private popBoiApp app;
 
+	/**
+	 * labels the buttons and title
+	 * 
+	 * @param app
+	 */
 	public ChatSelectionPanel(popBoiApp app) {
 		this.app = app;
 
@@ -24,6 +34,13 @@ public class ChatSelectionPanel extends JPanel {
 		add(createBotButton("Liberty Prime", "LibertyPrime"));
 	}
 
+	/**
+	 * creates the buttons
+	 * 
+	 * @param text
+	 * @param panelName
+	 * @return
+	 */
 	private JButton createBotButton(String text, String panelName) {
 		JButton button = new JButton(text);
 		button.addActionListener(e -> app.showScreen(panelName));
