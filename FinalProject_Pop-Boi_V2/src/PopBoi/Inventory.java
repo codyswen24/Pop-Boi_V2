@@ -24,10 +24,10 @@ public class Inventory extends JPanel {
 	private JList<String> itemList;
 	private DefaultListModel<String> listModel;
 
-	// ---- NEW CLASSES & DATA ----
-	public enum Category {
-		WEAPON, AMMO, AID, CONSUMABLE, MISC
-	}
+    // ---- NEW CLASSES & DATA ----
+    private enum Category {
+        APPERAL, WEAPON, AID, MISC
+    }
 
 	private class Item {
 		String name;
@@ -50,14 +50,16 @@ public class Inventory extends JPanel {
 
 	private List<Item> allItems = new ArrayList<>();
 
-	/**
-	 * Create the panel.
-	 */
-	public Inventory(popBoiApp app) {
-		this.app = app;
-		setBackground(Color.decode("#0A2F0A"));
-		setSize(800, 600);
-		setLayout(null);
+    /**
+     * Create the panel.
+     */
+    public Inventory(popBoiApp app) {
+        this.app = app;
+        setBackground(Color.decode("#0A2F0A"));
+        
+        setSize(800, 600);
+        
+        setLayout(null);
 
 		JLabel title = new JLabel("POP-BOI INVENTORY", SwingConstants.CENTER);
 		title.setBounds(250, 0, 350, 40);
@@ -96,48 +98,62 @@ public class Inventory extends JPanel {
 			}
 		});
 
-		// ----- ADD "ALL" BUTTON FIRST -----
-		Font newFont = new Font("Arial", Font.BOLD, 9);
-		int x = 33;
+        // ----- ADD CATEGORY FILTER BUTTONS -----
+        Font newFont = new Font("Arial", Font.BOLD, 9);
+        int x = 33;
+        for (Category c : Category.values()) {
+            JButton btn = new JButton(c.name());
+            btn.setBounds(x, 90, 110, 20);
+            btn.setBackground(new Color(0, 128, 0));
+            btn.addActionListener(e -> filterByCategory(c));
+            btn.setFont(newFont);
+            add(btn);
+            x += 115;
+        }
+        
+        // ---- ADD "ALL" BUTTON ----
+        JButton allButton = new JButton("ALL");
+        allButton.setBounds(x, 90, 110, 20);
+        allButton.setBackground(new Color(0, 128, 0));
+        allButton.addActionListener(e -> {
+            refreshList(allItems);
+            descriptionLabel.setText("Showing all items.");
+        });
+        allButton.setFont(newFont);
+        add(allButton);
 
-		JButton allButton = new JButton("ALL");
-		allButton.setBounds(x, 90, 110, 20);
-		allButton.addActionListener(e -> {
-			refreshList(allItems);
-			descriptionLabel.setText("Showing all items.");
-		});
-		allButton.setFont(newFont);
-		add(allButton);
-		x += 115;
+        // ----- BACK / OTHER BUTTONS -----
+        JButton statsButton = new JButton("Stats");
+        statsButton.setBackground(new Color(0, 128, 0));
+        statsButton.setBounds(33, 15, 82, 31);
+        statsButton.addActionListener(e -> app.showScreen("MainMenu"));
+        add(statsButton);
 
-		// ----- ADD CATEGORY BUTTONS NEXT -----
-		for (Category c : Category.values()) {
-			JButton btn = new JButton(c.name());
-			btn.setBounds(x, 90, 110, 20);
-			btn.addActionListener(e -> filterByCategory(c));
-			btn.setFont(newFont);
-			add(btn);
-			x += 115;
-		}
+        JButton blackjackButton = new JButton("Blackjack");
+        blackjackButton.setBackground(new Color(0, 128, 0));
+        blackjackButton.setBounds(125, 15, 100, 31);
+        blackjackButton.addActionListener(e -> app.showScreen("Blackjack"));
+        add(blackjackButton);
 
 		// ----- LOAD ITEMS -----
 		loadItems();
 		refreshList(allItems);
 	}
 
-	// ---- NEW: LOAD FALLOUT ITEMS ----
-	private void loadItems() {
-		allItems.add(new Item("Stimpak", "A medical injection that restores health.", Category.AID));
-		allItems.add(new Item("RadAway", "Flushes radiation from the bloodstream.", Category.AID));
-		allItems.add(new Item("Nuka Cola", "A refreshing soft drink. Slightly radioactive.", Category.CONSUMABLE));
-		allItems.add(new Item("Nuka Cola Quantum", "Glows bright blue. Provides more AP boost.", Category.CONSUMABLE));
-		allItems.add(new Item("Purified Water", "Clean water. Restores hydration and HP.", Category.CONSUMABLE));
-		allItems.add(new Item("Bottle Caps", "The post-war currency of the wasteland.", Category.MISC));
-		allItems.add(new Item("10mm Ammo", "Standard ammunition for many pistols.", Category.AMMO));
-		allItems.add(new Item("5.56mm Ammo", "Rifle ammunition used in many assault rifles.", Category.AMMO));
-		allItems.add(new Item("Laser Rifle", "Energy weapon firing concentrated light beams.", Category.WEAPON));
-		allItems.add(new Item("Combat Knife", "A lightweight melee weapon.", Category.WEAPON));
-	}
+    // ---- NEW: LOAD FALLOUT ITEMS ----
+    private void loadItems() {
+        allItems.add(new Item("Stimpak", "A medical injection that restores health.", Category.AID));
+        allItems.add(new Item("RadAway", "Flushes radiation from the bloodstream.", Category.AID));
+        allItems.add(new Item("Nuka Cola", "A refreshing soft drink. Slightly radioactive.", Category.AID));
+        allItems.add(new Item("Nuka Cola Quantum", "Glows bright blue. Provides more AP boost.", Category.AID));
+        allItems.add(new Item("Purified Water", "Clean water. Restores hydration and HP.", Category.AID));
+        allItems.add(new Item("Bottle Caps", "The post-war currency of the wasteland.", Category.MISC));
+        allItems.add(new Item("10mm Ammo", "Standard ammunition for many pistols.", Category.WEAPON));
+        allItems.add(new Item("5.56mm Ammo", "Rifle ammunition used in many assault rifles.", Category.WEAPON));
+        allItems.add(new Item("Laser Rifle", "Energy weapon firing concentrated light beams.", Category.WEAPON));
+        allItems.add(new Item("Combat Knife", "A lightweight melee weapon.", Category.WEAPON));
+        allItems.add(new Item("Raider Jacket", "A jacket from a fallen raider.", Category.APPERAL));
+    }
 
 	// ---- NEW: FILTER LIST BY CATEGORY ----
 	private void filterByCategory(Category category) {
