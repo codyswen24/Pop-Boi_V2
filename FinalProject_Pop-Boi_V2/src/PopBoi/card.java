@@ -1,20 +1,32 @@
 package PopBoi;
 
+/**
+ * This class creates the card objects
+ * @author Cody Swensen
+ */
 public class card {
 	private String suit;
 	private String rank;
 	private int value;
 	private String imagePath;
 
-	public card (String suit, String rank, int value) {
+	/**
+	 * constructor for the card object
+	 * @param suit
+	 * @param rank
+	 * @param value
+	 */
+	public card(String suit, String rank, int value) {
 		this.suit = suit;
 		this.rank = rank;
 		this.value = value;
-		this.imagePath = "/Images/" + rank + "_of_" + suit + ".jpg";
+		//image path the the card image
+		this.imagePath = "/PopBoi/Images/" + rank + "_of_" + suit + ".png";
 	}
 
 	/**
 	 * @return the suit
+	 * @author codys
 	 */
 	public String getSuit() {
 		return suit;
@@ -22,6 +34,7 @@ public class card {
 
 	/**
 	 * @return the rank
+	 * @author codys
 	 */
 	public String getRank() {
 		return rank;
@@ -29,13 +42,15 @@ public class card {
 
 	/**
 	 * @return the value
+	 * @author codys
 	 */
 	public int getValue() {
 		return value;
 	}
-	
+
 	/**
 	 * @return the value
+	 * @author codys
 	 */
 	public String getImagePath() {
 		return imagePath;
