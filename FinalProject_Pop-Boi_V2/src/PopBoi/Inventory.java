@@ -201,7 +201,7 @@ public class Inventory extends JPanel {
         refreshList(allItems);
         descriptionLabel.setText("Item dropped.");
     }
-
+    //hello
     // ---- FILTER BY CATEGORY ----
     private void filterByCategory(Category category) {
         List<Item> filtered = allItems.stream()
@@ -211,7 +211,6 @@ public class Inventory extends JPanel {
         refreshList(filtered);
         descriptionLabel.setText("Viewing category: " + category.name());
     }
-    //hello
     // ---- REFRESH LIST ----
     private void refreshList(List<Item> items) {
         listModel.clear();
