@@ -2,10 +2,22 @@ package PopBoi;
 
 import java.awt.Color;
 
+/**
+ * Subclass of chatbot dogmeat is a companion that brings you stuff and raises
+ * moral
+ * 
+ * @author SpencerS
+ */
 public class Dogmeat extends ChatBot {
 
 	private Inventory inventory;
 
+	/**
+	 * creates Dogmeat
+	 * 
+	 * @param app
+	 * @param inventory
+	 */
 	public Dogmeat(popBoiApp app, Inventory inventory) {
 		super(app);
 		this.inventory = inventory;
@@ -29,6 +41,10 @@ public class Dogmeat extends ChatBot {
 		return "Dogmeat";
 	}
 
+	/**
+	 * overrides the generateResponse and then also has a chance to create an object
+	 * to place in your inventory
+	 */
 	@Override
 	protected String generateResponse(String userInput) {
 		double chance = Math.random(); // 0.0 <= chance < 1.0
