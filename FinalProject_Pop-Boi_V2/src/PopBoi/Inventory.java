@@ -2,7 +2,6 @@ package PopBoi;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,186 +11,211 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class Inventory extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private popBoiApp app;
-	private JLabel descriptionLabel;
-	private JList<String> itemList;
-	private DefaultListModel<String> listModel;
+    private popBoiApp app;
+    private JLabel descriptionLabel;
+    private JList<String> itemList;
+    private DefaultListModel<String> listModel;
 
     // ---- NEW CLASSES & DATA ----
     private enum Category {
         APPERAL, WEAPON, AID, MISC
     }
 
-	private class Item {
-		String name;
-		String description;
-		Category category;
-		int quantity;
+    private class Item {
+        String name;
+        String description;
+        Category category;
+        int quantity;
 
-		Item(String name, String description, Category category) {
-			this.name = name;
-			this.description = description;
-			this.category = category;
-			this.quantity = 1;
-		}
+        Item(String name, String description, Category category, int quantity) {
+            this.name = name;
+            this.description = description;
+            this.category = category;
+            this.quantity = quantity;
+        }
 
-		@Override
-		public String toString() {
-			return name + (quantity > 1 ? " x" + quantity : "");
-		}
-	}
+        @Override
+        public String toString() {
+            return name + " (" + quantity + ")";
+        }
+    }
 
-	private List<Item> allItems = new ArrayList<>();
+    private List<Item> allItems = new ArrayList<>();
 
-    /**
-     * Create the panel.
-     */
     public Inventory(popBoiApp app) {
         this.app = app;
+
         setBackground(Color.decode("#0A2F0A"));
-        
         setSize(800, 600);
-        
         setLayout(null);
 
-		JLabel title = new JLabel("POP-BOI INVENTORY", SwingConstants.CENTER);
-		title.setBounds(250, 0, 350, 40);
-		title.setForeground(Color.GREEN);
-		add(title);
+        JLabel title = new JLabel("POP-BOI INVENTORY", SwingConstants.CENTER);
+        title.setBounds(250, 0, 350, 40);
+        title.setForeground(Color.GREEN);
+        add(title);
 
-		// ----- RIGHT PANEL FOR ITEM DESCRIPTION -----
-		JPanel infoPanel = new JPanel();
-		infoPanel.setBackground(new Color(0, 128, 64));
-		infoPanel.setBounds(396, 136, 374, 442);
-		infoPanel.setLayout(new BorderLayout());
+        // ----- RIGHT PANEL FOR ITEM INFO -----
+        JPanel infoPanel = new JPanel();
+        infoPanel.setBackground(new Color(0, 128, 64));
+        infoPanel.setBounds(396, 136, 374, 442);
+        infoPanel.setLayout(new BorderLayout());
 
-		descriptionLabel = new JLabel("No item selected.", SwingConstants.CENTER);
-		descriptionLabel.setForeground(Color.BLACK);
-		infoPanel.add(descriptionLabel, BorderLayout.NORTH);
+        descriptionLabel = new JLabel("No item selected.", SwingConstants.CENTER);
+        descriptionLabel.setForeground(Color.BLACK);
+        infoPanel.add(descriptionLabel, BorderLayout.NORTH);
+        add(infoPanel);
 
-		add(infoPanel);
+        // ---- NEW DROP BUTTON PANEL ----
+        JPanel dropPanel = new JPanel();
+        dropPanel.setBackground(new Color(0, 100, 50));
 
-		// ----- ITEM LIST -----
-		listModel = new DefaultListModel<>();
-		itemList = new JList<>(listModel);
-		itemList.setBackground(new Color(0, 128, 64));
-		itemList.setBounds(33, 136, 246, 453);
-		add(itemList);
+        JButton drop1Btn = new JButton("Drop 1");
+        JButton dropXBtn = new JButton("Drop X");
+        JButton dropAllBtn = new JButton("Drop All");
 
-		itemList.addListSelectionListener(e -> {
-			if (!e.getValueIsAdjusting()) {
-				String selectedValue = itemList.getSelectedValue();
-				Item item = allItems.stream().filter(i -> i.name.equals(selectedValue)).findFirst().orElse(null);
+        dropPanel.add(drop1Btn);
+        dropPanel.add(dropXBtn);
+        dropPanel.add(dropAllBtn);
 
-				if (item != null)
-					descriptionLabel.setText(
-							"<html><center><b>" + item.name + "</b><br>" + item.description + "</center></html>");
-				else
-					descriptionLabel.setText("No item selected");
-			}
-		});
+        infoPanel.add(dropPanel, BorderLayout.SOUTH);
 
-        // ----- ADD CATEGORY FILTER BUTTONS -----
+        // ----- ITEM LIST -----
+        listModel = new DefaultListModel<>();
+        itemList = new JList<>(listModel);
+        itemList.setBackground(new Color(0, 128, 64));
+        itemList.setBounds(33, 136, 246, 453);
+        add(itemList);
+
+        itemList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                Item item = getSelectedItem();
+                if (item != null)
+                    descriptionLabel.setText("<html><center><b>" + item.name + "</b><br>" 
+                                             + item.description + "<br>"
+                                             + "Quantity: " + item.quantity + "</center></html>");
+                else
+                    descriptionLabel.setText("No item selected");
+            }
+        });
+
+        // ----- DROP BUTTON LOGIC -----
+        drop1Btn.addActionListener(e -> dropAmount(1));
+        dropXBtn.addActionListener(e -> {
+            Item selected = getSelectedItem();
+            if (selected == null) return;
+
+            String input = JOptionPane.showInputDialog(this, "Drop how many?");
+            if (input != null && input.matches("\\d+")) {
+                int amt = Integer.parseInt(input);
+                dropAmount(amt);
+            }
+        });
+        dropAllBtn.addActionListener(e -> dropAll());
+
+        // ---- CATEGORY FILTER BUTTONS ----
         Font newFont = new Font("Arial", Font.BOLD, 9);
         int x = 33;
+
         for (Category c : Category.values()) {
             JButton btn = new JButton(c.name());
             btn.setBounds(x, 90, 110, 20);
             btn.setBackground(new Color(0, 128, 0));
-            btn.addActionListener(e -> filterByCategory(c));
             btn.setFont(newFont);
+            btn.addActionListener(e -> filterByCategory(c));
             add(btn);
             x += 115;
         }
-        
-        // ---- ADD "ALL" BUTTON ----
+
+        // ---- "ALL" BUTTON ----
         JButton allButton = new JButton("ALL");
         allButton.setBounds(x, 90, 110, 20);
         allButton.setBackground(new Color(0, 128, 0));
+        allButton.setFont(newFont);
         allButton.addActionListener(e -> {
             refreshList(allItems);
             descriptionLabel.setText("Showing all items.");
         });
-        allButton.setFont(newFont);
         add(allButton);
 
-        // ----- BACK / OTHER BUTTONS -----
-        JButton statsButton = new JButton("Stats");
-        statsButton.setBackground(new Color(0, 128, 0));
-        statsButton.setBounds(33, 15, 82, 31);
-        statsButton.addActionListener(e -> app.showScreen("MainMenu"));
-        add(statsButton);
-
-        JButton blackjackButton = new JButton("Blackjack");
-        blackjackButton.setBackground(new Color(0, 128, 0));
-        blackjackButton.setBounds(125, 15, 100, 31);
-        blackjackButton.addActionListener(e -> app.showScreen("Blackjack"));
-        add(blackjackButton);
-
-		// ----- LOAD ITEMS -----
-		loadItems();
-		refreshList(allItems);
-	}
-
-    // ---- NEW: LOAD FALLOUT ITEMS ----
-    private void loadItems() {
-        allItems.add(new Item("Stimpak", "A medical injection that restores health.", Category.AID));
-        allItems.add(new Item("RadAway", "Flushes radiation from the bloodstream.", Category.AID));
-        allItems.add(new Item("Nuka Cola", "A refreshing soft drink. Slightly radioactive.", Category.AID));
-        allItems.add(new Item("Nuka Cola Quantum", "Glows bright blue. Provides more AP boost.", Category.AID));
-        allItems.add(new Item("Purified Water", "Clean water. Restores hydration and HP.", Category.AID));
-        allItems.add(new Item("Bottle Caps", "The post-war currency of the wasteland.", Category.MISC));
-        allItems.add(new Item("10mm Ammo", "Standard ammunition for many pistols.", Category.WEAPON));
-        allItems.add(new Item("5.56mm Ammo", "Rifle ammunition used in many assault rifles.", Category.WEAPON));
-        allItems.add(new Item("Laser Rifle", "Energy weapon firing concentrated light beams.", Category.WEAPON));
-        allItems.add(new Item("Combat Knife", "A lightweight melee weapon.", Category.WEAPON));
-        allItems.add(new Item("Raider Jacket", "A jacket from a fallen raider.", Category.APPERAL));
+        // ----- LOAD ITEMS -----
+        loadItems();
+        refreshList(allItems);
     }
 
-	// ---- NEW: FILTER LIST BY CATEGORY ----
-	private void filterByCategory(Category category) {
-		List<Item> filtered = allItems.stream().filter(i -> i.category == category).collect(Collectors.toList());
+    // ---- LOAD ITEMS WITH QUANTITIES ----
+    private void loadItems() {
+        allItems.add(new Item("Stimpak", "A medical injection that restores health.", Category.AID, 3));
+        allItems.add(new Item("RadAway", "Flushes radiation from the bloodstream.", Category.AID, 2));
+        allItems.add(new Item("Nuka Cola", "A refreshing soft drink.", Category.AID, 5));
+        allItems.add(new Item("Bottle Caps", "Wasteland currency.", Category.MISC, 412));
+        allItems.add(new Item("10mm Ammo", "Standard pistol ammo.", Category.WEAPON, 120));
+        allItems.add(new Item("5.56mm Ammo", "Rifle ammo.", Category.WEAPON, 90));
+        allItems.add(new Item("Laser Rifle", "Energy weapon.", Category.WEAPON, 1));
+        allItems.add(new Item("Combat Knife", "Light melee weapon.", Category.WEAPON, 1));
+        allItems.add(new Item("Raider Jacket", "Armor taken from a raider.", Category.APPERAL, 1));
+    }
 
-		refreshList(filtered);
-		descriptionLabel.setText("Viewing category: " + category.name());
-	}
+    // ---- GET CURRENT SELECTED ITEM ----
+    private Item getSelectedItem() {
+        String selected = itemList.getSelectedValue();
+        if (selected == null) return null;
 
-	// ---- NEW: REFRESH LIST MODEL ----
-	private void refreshList(List<Item> items) {
-		listModel.clear();
-		for (Item i : items) {
-			listModel.addElement(i.toString());
-		}
-	}
+        // Matches "Name (number)"
+        String name = selected.substring(0, selected.lastIndexOf("(")).trim();
 
-	/**
-	 * Adds a item to inventory
-	 * 
-	 * @author SpencerS
-	 * @param name
-	 * @param description
-	 * @param category
-	 */
-	// ---- NEW: ADD ITEM ----
-	public void addItem(String name, String description, Category category) {
-		// Check if item already exists
-		Item existing = allItems.stream().filter(i -> i.name.equals(name)).findFirst().orElse(null);
+        return allItems.stream()
+                .filter(i -> i.name.equals(name))
+                .findFirst()
+                .orElse(null);
+    }
 
-		if (existing != null) {
-			existing.quantity++;
-			refreshList(allItems); // update display
-		} else {
-			Item newItem = new Item(name, description, category);
-			allItems.add(newItem);
-			listModel.addElement(newItem.toString());
-		}
-	}
+    // ---- DROP AMOUNT ----
+    private void dropAmount(int amount) {
+        Item item = getSelectedItem();
+        if (item == null) return;
 
+        if (amount >= item.quantity) {
+            dropAll();
+            return;
+        }
+
+        item.quantity -= amount;
+        refreshList(allItems);
+        itemList.setSelectedValue(item.toString(), true);
+    }
+
+    // ---- DROP ALL ----
+    private void dropAll() {
+        Item item = getSelectedItem();
+        if (item == null) return;
+
+        allItems.remove(item);
+        refreshList(allItems);
+        descriptionLabel.setText("Item dropped.");
+    }
+
+    // ---- FILTER BY CATEGORY ----
+    private void filterByCategory(Category category) {
+        List<Item> filtered = allItems.stream()
+                .filter(i -> i.category == category)
+                .collect(Collectors.toList());
+
+        refreshList(filtered);
+        descriptionLabel.setText("Viewing category: " + category.name());
+    }
+    //hello
+    // ---- REFRESH LIST ----
+    private void refreshList(List<Item> items) {
+        listModel.clear();
+        for (Item i : items)
+            listModel.addElement(i.toString());
+    }
 }
