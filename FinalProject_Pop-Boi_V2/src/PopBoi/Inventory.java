@@ -25,24 +25,26 @@ public class Inventory extends JPanel {
 	private DefaultListModel<String> listModel;
 
 	// ---- NEW CLASSES & DATA ----
-	private enum Category {
-		CONSUMABLE, AMMO, MATERIAL, WEAPON, AID
+	public enum Category {
+		WEAPON, AMMO, AID, CONSUMABLE, MISC
 	}
 
 	private class Item {
 		String name;
 		String description;
 		Category category;
+		int quantity;
 
 		Item(String name, String description, Category category) {
 			this.name = name;
 			this.description = description;
 			this.category = category;
+			this.quantity = 1;
 		}
 
 		@Override
 		public String toString() {
-			return name; // What appears in JList
+			return name + (quantity > 1 ? " x" + quantity : "");
 		}
 	}
 
@@ -94,19 +96,10 @@ public class Inventory extends JPanel {
 			}
 		});
 
-		// ----- ADD CATEGORY FILTER BUTTONS -----
+		// ----- ADD "ALL" BUTTON FIRST -----
 		Font newFont = new Font("Arial", Font.BOLD, 9);
 		int x = 33;
-		for (Category c : Category.values()) {
-			JButton btn = new JButton(c.name());
-			btn.setBounds(x, 90, 110, 20);
-			btn.addActionListener(e -> filterByCategory(c));
-			btn.setFont(newFont);
-			add(btn);
-			x += 115;
-		}
 
-		// ---- ADD "ALL" BUTTON ----
 		JButton allButton = new JButton("ALL");
 		allButton.setBounds(x, 90, 110, 20);
 		allButton.addActionListener(e -> {
@@ -115,6 +108,17 @@ public class Inventory extends JPanel {
 		});
 		allButton.setFont(newFont);
 		add(allButton);
+		x += 115;
+
+		// ----- ADD CATEGORY BUTTONS NEXT -----
+		for (Category c : Category.values()) {
+			JButton btn = new JButton(c.name());
+			btn.setBounds(x, 90, 110, 20);
+			btn.addActionListener(e -> filterByCategory(c));
+			btn.setFont(newFont);
+			add(btn);
+			x += 115;
+		}
 
 		// ----- LOAD ITEMS -----
 		loadItems();
@@ -128,7 +132,7 @@ public class Inventory extends JPanel {
 		allItems.add(new Item("Nuka Cola", "A refreshing soft drink. Slightly radioactive.", Category.CONSUMABLE));
 		allItems.add(new Item("Nuka Cola Quantum", "Glows bright blue. Provides more AP boost.", Category.CONSUMABLE));
 		allItems.add(new Item("Purified Water", "Clean water. Restores hydration and HP.", Category.CONSUMABLE));
-		allItems.add(new Item("Bottle Caps", "The post-war currency of the wasteland.", Category.MATERIAL));
+		allItems.add(new Item("Bottle Caps", "The post-war currency of the wasteland.", Category.MISC));
 		allItems.add(new Item("10mm Ammo", "Standard ammunition for many pistols.", Category.AMMO));
 		allItems.add(new Item("5.56mm Ammo", "Rifle ammunition used in many assault rifles.", Category.AMMO));
 		allItems.add(new Item("Laser Rifle", "Energy weapon firing concentrated light beams.", Category.WEAPON));
@@ -146,7 +150,32 @@ public class Inventory extends JPanel {
 	// ---- NEW: REFRESH LIST MODEL ----
 	private void refreshList(List<Item> items) {
 		listModel.clear();
-		for (Item i : items)
-			listModel.addElement(i.name);
+		for (Item i : items) {
+			listModel.addElement(i.toString());
+		}
 	}
+
+	/**
+	 * Adds a item to inventory
+	 * 
+	 * @author SpencerS
+	 * @param name
+	 * @param description
+	 * @param category
+	 */
+	// ---- NEW: ADD ITEM ----
+	public void addItem(String name, String description, Category category) {
+		// Check if item already exists
+		Item existing = allItems.stream().filter(i -> i.name.equals(name)).findFirst().orElse(null);
+
+		if (existing != null) {
+			existing.quantity++;
+			refreshList(allItems); // update display
+		} else {
+			Item newItem = new Item(name, description, category);
+			allItems.add(newItem);
+			listModel.addElement(newItem.toString());
+		}
+	}
+
 }
