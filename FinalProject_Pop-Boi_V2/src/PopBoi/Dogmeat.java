@@ -10,6 +10,11 @@ import java.awt.Color;
  */
 public class Dogmeat extends ChatBot {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Inventory inventory;
 
 	/**
@@ -49,45 +54,48 @@ public class Dogmeat extends ChatBot {
 	protected String generateResponse(String userInput) {
 		double chance = Math.random(); // 0.0 <= chance < 1.0
 
-		// 10% chance Dogmeat brings 10mm Ammo
+		// 10% chance Dogmeat brings 10mm Ammo (adds 10)
 		if (chance < 0.1) {
 			if (inventory != null) {
-				inventory.addItem("10mm Ammo", "Standard ammunition for many pistols.", Inventory.Category.WEAPON);
+				inventory.addItem("10mm Ammo", "Standard pistol ammo.", Inventory.Category.WEAPON, 10);
 			}
-			return "Brings you ammo, Bark!";
-		}
-		// 10% chance Dogmeat brings 5.56mm Ammo
-		else if (chance < 0.2) {
-			if (inventory != null) {
-				inventory.addItem("5.56mm Ammo", "Rifle ammunition used in many assault rifles.",
-						Inventory.Category.WEAPON);
-			}
-			return "Brings you ammo, Bark!";
-		}
-		// 10% chance Dogmeat brings Stimpak
-		else if (chance < 0.3) {
-			if (inventory != null) {
-				inventory.addItem("Stimpak", "A medical injection that restores health.", Inventory.Category.AID);
-			}
-			return "Brings you a stim, Woof Woof!";
-		}
-		// 10% chance Dogmeat brings RadAway
-		else if (chance < 0.4) {
-			if (inventory != null) {
-				inventory.addItem("RadAway", "Flushes radiation from the bloodstream.", Inventory.Category.AID);
-			}
-			return "Brings you a RadAway, Woof Woof!";
-		}
-		// 10% chance Dogmeat brings Nuka Cola
-		else if (chance < 0.7) {
-			if (inventory != null) {
-				inventory.addItem("Nuka Cola", "A refreshing soft drink. Slightly radioactive.s",
-						Inventory.Category.AID);
-			}
-			return "Brings you a Nuka Cola, Woof Woof!";
+			return "Brings you 10 rounds of 10mm ammo! Bark!";
 		}
 
-		// 50% chance Dogmeat barks twice
+		// 10% chance Dogmeat brings 5.56mm Ammo (adds 10)
+		else if (chance < 0.2) {
+			if (inventory != null) {
+				inventory.addItem("5.56mm Ammo", "Rifle ammo.", Inventory.Category.WEAPON, 10);
+			}
+			return "Brings you 10 rounds of 5.56mm ammo! Bark!";
+		}
+
+		// 10% chance Dogmeat brings Stimpak (adds 1)
+		else if (chance < 0.3) {
+			if (inventory != null) {
+				inventory.addItem("Stimpak", "Restores health.", Inventory.Category.AID, 1);
+			}
+			return "Brings you a Stimpak, Woof Woof!";
+		}
+
+		// 10% chance Dogmeat brings RadAway (adds 1)
+		else if (chance < 0.4) {
+			if (inventory != null) {
+				inventory.addItem("RadAway", "Flushes radiation.", Inventory.Category.AID, 1);
+			}
+			return "Brings you a RadAway, Woof!";
+		}
+
+		// 30% chance Dogmeat brings Nuka Cola (adds 1)
+		else if (chance < 0.7) {
+			if (inventory != null) {
+				inventory.addItem("Nuka Cola", "A refreshing soft drink. Slightly radioactive.", Inventory.Category.AID,
+						1);
+			}
+			return "Brings you a Nuka Cola, Woof!";
+		}
+
+		// 20% chance Dogmeat barks twice
 		else if (chance < 0.9) {
 			return getResponses()[1] + " " + getResponses()[1];
 		}
