@@ -4,6 +4,7 @@ import java.awt.Color;
 
 /**
  * Subclass of ChatBot: Dogmeat
+ * @author SpencerS
  */
 public class Dogmeat extends ChatBot {
 
@@ -43,6 +44,9 @@ public class Dogmeat extends ChatBot {
 		return "/PopBoi/Images/DOGMEAT.png";
 	}
 
+	/**
+	 * has a chance to bring you items to put in your inventory
+	 */
 	@Override
 	protected String generateResponse(String userInput) {
 		double chance = Math.random();
