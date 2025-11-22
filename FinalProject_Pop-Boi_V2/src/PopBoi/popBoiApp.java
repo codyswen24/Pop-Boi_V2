@@ -1,119 +1,150 @@
 package PopBoi;
 
 import java.awt.EventQueue;
-import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * The main method to run everything
+ * 
+ * @author SpencerS
+ */
 public class popBoiApp extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
+	private Inventory inventoryPanel;
+	private stats statsPanel;
 
-	/**
-	 * Launch the application.
-	 */
+	// Store all main menu buttons so we can highlight them
+	private Map<String, JButton> buttons = new HashMap<>();
+
+	// Default + Highlight colors
+	private final Color DEFAULT_COLOR = Color.decode("#145214");
+	private final Color HIGHLIGHT_COLOR = Color.decode("#2AFF2A");
+
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					popBoiApp frame = new popBoiApp();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				popBoiApp frame = new popBoiApp();
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
 	/**
-	 * Create the frame.
+	 * 
 	 */
 	public popBoiApp() {
 		setTitle("Pop-Boi 3000");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
+		setLayout(new BorderLayout());
 
-		// Card layout for screen switching
+		// Create the menu bar
+		JPanel menuBar = createMainMenu();
+		add(menuBar, BorderLayout.NORTH);
+
+		// Main screen area
 		cardLayout = new CardLayout();
 		mainPanel = new JPanel(cardLayout);
 
-		// Add screens
-		mainPanel.add(createMainMenu(), "MainMenu");
-		mainPanel.add(new blackJack(this), "Blackjack");
-		mainPanel.add(new Inventory(this), "Inventory");
-		mainPanel.add(new Map(this), "Map");
-		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
-		mainPanel.add(new Deathclaw(this), "Deathclaw");
-		mainPanel.add(new LibertyPrime(this), "LibertyPrime");
+		// Create single instances of stats and inventory
+		statsPanel = new stats(this);
+		inventoryPanel = new Inventory(this);
 
-		Inventory inventoryPanel = new Inventory(this);
-		Dogmeat dogmeatPanel = new Dogmeat(this, inventoryPanel);
-
+		// Add screens using the same instances
+		mainPanel.add(statsPanel, "MainMenu");
 		mainPanel.add(inventoryPanel, "Inventory");
-		mainPanel.add(dogmeatPanel, "Dogmeat");
+		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
+		mainPanel.add(new MapScreen(this), "Map");
+		mainPanel.add(new blackJack(this), "Blackjack");
+		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
+		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
+		mainPanel.add(new Dogmeat(this, inventoryPanel), "Dogmeat");
 
-		getContentPane().add(mainPanel);
+		// Add the card layout to the frame
+		add(mainPanel, BorderLayout.CENTER);
+
+		// Highlight Stats button since it's the default screen
+		highlightButton("MainMenu");
+
 		setVisible(true);
 	}
 
 	/**
-	 * Switches the panels when the buttons are clicked
+	 * shows the screen of the button that was clicked
 	 * 
 	 * @param name
-	 * @author codys
 	 */
 	public void showScreen(String name) {
 		cardLayout.show(mainPanel, name);
+		highlightButton(name);
 	}
 
 	/**
-	 * Creates the main menu of buttons at the top of the GUI that will switch
-	 * between each panel
+	 * every time the menu buttons are clicked the button that is clicked highlights
 	 * 
-	 * @author SpencerS
-	 * @author codys
+	 * @param activeScreen
+	 */
+	private void highlightButton(String activeScreen) {
+		buttons.forEach((screenName, button) -> {
+			if (screenName.equals(activeScreen)) {
+				button.setBackground(HIGHLIGHT_COLOR);
+			} else {
+				button.setBackground(DEFAULT_COLOR);
+			}
+		});
+	}
+
+	/**
+	 * Create top button menu
 	 */
 	private JPanel createMainMenu() {
 		JPanel menu = new JPanel();
 		menu.setBackground(Color.decode("#0F3D0F"));
-		menu.setLayout(new BorderLayout(0, 0));
+		menu.setLayout(new GridLayout(1, 5, 5, 0));
 
-		JPanel controlPanel = new JPanel();
-		controlPanel.setBackground(Color.decode("#0F3D0F"));
-		add(controlPanel, BorderLayout.NORTH);
-		controlPanel.setLayout(new GridLayout(1, 1, 5, 0));
-
-		JButton StatsButton = new JButton("Stats");
-		StatsButton.addActionListener(e -> showScreen("MainMenu"));
-		controlPanel.add(StatsButton);
-
-		JButton inventoryButton = new JButton("Inventory");
-		inventoryButton.addActionListener(e -> showScreen("Inventory"));
-		controlPanel.add(inventoryButton);
-
-		JButton chatBotButton = new JButton("Chat-Bot");
-		chatBotButton.addActionListener(e -> showScreen("ChatSelect"));
-		controlPanel.add(chatBotButton);
-
-		JButton mapButton = new JButton("Map");
-		mapButton.addActionListener(e -> showScreen("Map"));
-		controlPanel.add(mapButton);
-
-		JButton blackjackButton = new JButton("Blackjack");
-		blackjackButton.addActionListener(e -> showScreen("Blackjack"));
-		controlPanel.add(blackjackButton);
+		addMenuButton(menu, "MainMenu", "Stats");
+		addMenuButton(menu, "Inventory", "Inventory");
+		addMenuButton(menu, "ChatSelect", "Chat-Bot");
+		addMenuButton(menu, "Map", "Map");
+		addMenuButton(menu, "Blackjack", "Blackjack");
 
 		return menu;
 	}
 
+	/**
+	 * adds the menu buttons at the top of all screens
+	 * 
+	 * @param panel
+	 * @param screenName
+	 * @param label
+	 */
+	private void addMenuButton(JPanel panel, String screenName, String label) {
+		JButton btn = new JButton(label);
+		btn.setBackground(DEFAULT_COLOR);
+		btn.setForeground(Color.WHITE);
+
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setContentAreaFilled(true);
+
+		btn.addActionListener(e -> showScreen(screenName));
+
+		buttons.put(screenName, btn);
+		panel.add(btn);
+	}
 }
