@@ -5,8 +5,8 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * the superclass chatbot will have an array of string to randomly output said
- * strings to the user
+ * The superclass chatbot will have an array of strings to randomly output to
+ * the user
  * 
  * @author SpencerS
  */
@@ -20,7 +20,7 @@ public class ChatBot extends JPanel {
 	protected Random rand = new Random();
 
 	/**
-	 * creats the object ChatBot
+	 * Creates the object ChatBot
 	 * 
 	 * @param app
 	 */
@@ -39,73 +39,64 @@ public class ChatBot extends JPanel {
 	// =============== OVERRIDABLE METHODS =================
 	// =====================================================
 
-	/**
-	 * gets all the Strings and puts it into an array
-	 * 
-	 * @return String[]
-	 */
 	protected String[] getResponses() {
 		return new String[] { "Hello there!", "How can I help you?", "Interesting...", "Tell me more!",
 				"I'm not sure about that.", "Haha, that's funny!", "Good question!" };
 	}
 
-	/**
-	 * to output the random responses
-	 * 
-	 * @param userInput
-	 * @return
-	 */
 	protected String generateResponse(String userInput) {
 		String[] responses = getResponses();
 		return responses[rand.nextInt(responses.length)];
 	}
 
-	/**
-	 * the title of the chat bot
-	 * 
-	 * @return ChatBot
-	 */
 	protected String getTitle() {
 		return "ChatBot";
 	}
 
+	protected String getIconPath() {
+		// Subclasses should override to supply their own icon
+		return "/PopBoi/Images/DOGMEAT.png";
+	}
+
 	// =====================================================
-	// ===================== UI SETUP =======================
+	// ===================== UI SETUP =====================
 	// =====================================================
 
-	/**
-	 * the title
-	 */
 	private void createTitleBar() {
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground(Color.decode("#0A2F0A"));
+		bar.setPreferredSize(new Dimension(0, 50)); // reduce height
 
+		// Title label
 		JLabel lblTitle = new JLabel(getTitle(), SwingConstants.CENTER);
 		lblTitle.setOpaque(true);
 		lblTitle.setBackground(new Color(10, 47, 10));
 		lblTitle.setForeground(Color.GREEN);
+		lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 
+		// Load and scale the icon
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource(getIconPath()));
+		Image scaledImg = originalIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(scaledImg);
+		JLabel iconLabel = new JLabel(icon);
+
+		// Add to title bar
 		bar.add(lblTitle, BorderLayout.CENTER);
+		bar.add(iconLabel, BorderLayout.EAST);
+
 		add(bar, BorderLayout.NORTH);
 	}
 
-	/**
-	 * the input panel
-	 */
 	private void createChatArea() {
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);
 		chatArea.setBackground(new Color(15, 40, 15));
 		chatArea.setForeground(Color.GREEN);
-
+		chatArea.setFont(chatArea.getFont().deriveFont(14f));
 		add(new JScrollPane(chatArea), BorderLayout.CENTER);
 	}
 
-	/**
-	 * makes the field that allows the user to type input
-	 */
 	private void createInputField() {
-
 		JPanel inputPanel = new JPanel(new BorderLayout());
 		inputPanel.setBackground(new Color(20, 60, 20));
 
@@ -113,8 +104,7 @@ public class ChatBot extends JPanel {
 		inputField.setBackground(new Color(20, 60, 20));
 		inputField.setForeground(Color.GREEN);
 		inputField.setCaretColor(Color.GREEN);
-
-		inputField.setPreferredSize(new java.awt.Dimension(0, 40));
+		inputField.setPreferredSize(new Dimension(0, 40));
 		inputField.setFont(inputField.getFont().deriveFont(16f));
 
 		inputField.addActionListener(e -> processInput());
@@ -123,13 +113,6 @@ public class ChatBot extends JPanel {
 		add(inputPanel, BorderLayout.SOUTH);
 	}
 
-	// =====================================================
-	// ================== INPUT HANDLING ====================
-	// =====================================================
-
-	/**
-	 * will process the input and generate a random response.
-	 */
 	private void processInput() {
 		String text = inputField.getText().trim();
 		if (text.isEmpty())
@@ -142,13 +125,7 @@ public class ChatBot extends JPanel {
 		chatArea.append(getBotName() + ": " + reply + "\n");
 	}
 
-	/**
-	 * the name of the bot in the bot channels
-	 * 
-	 * @return Bot
-	 */
 	protected String getBotName() {
-		// Default is "Bot", subclasses can override
 		return "Bot";
 	}
 }
