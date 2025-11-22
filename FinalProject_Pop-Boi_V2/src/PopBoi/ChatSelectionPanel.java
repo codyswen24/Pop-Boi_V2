@@ -10,13 +10,10 @@ import java.awt.*;
  */
 public class ChatSelectionPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	private popBoiApp app;
 
-	/**
-	 * labels the buttons and title
-	 * 
-	 * @param app
-	 */
 	public ChatSelectionPanel(popBoiApp app) {
 		this.app = app;
 
@@ -28,22 +25,44 @@ public class ChatSelectionPanel extends JPanel {
 		title.setFont(new Font("Arial", Font.BOLD, 20));
 		add(title);
 
-		// Add bot selection buttons
-		add(createBotButton("Deathclaw", "Deathclaw"));
-		add(createBotButton("Dogmeat", "Dogmeat"));
-		add(createBotButton("Liberty Prime", "LibertyPrime"));
+		// Add bot selection buttons with icons
+		add(createBotButton("Deathclaw", "Deathclaw", "/PopBoi/Images/DEATHCLAW.png"));
+		add(createBotButton("Dogmeat", "Dogmeat", "/PopBoi/Images/DOGMEAT.png"));
+		add(createBotButton("Liberty Prime", "LibertyPrime", "/PopBoi/Images/LIBERTYPRIME.png"));
 	}
 
 	/**
-	 * creates the buttons
+	 * creates the buttons with icon
 	 * 
-	 * @param text
-	 * @param panelName
-	 * @return
+	 * @param text      Button label
+	 * @param panelName Screen to switch to
+	 * @param iconPath  Path to the image inside resources
+	 * @return JButton with icon
 	 */
-	private JButton createBotButton(String text, String panelName) {
-		JButton button = new JButton(text);
+	private JButton createBotButton(String text, String panelName, String iconPath) {
+		// Load the image as an icon
+		ImageIcon icon = null;
+		try {
+			icon = new ImageIcon(getClass().getResource(iconPath));
+			// Optional: scale icon to fit nicely
+			Image img = icon.getImage();
+			Image scaledImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			icon = new ImageIcon(scaledImg);
+		} catch (Exception e) {
+			System.out.println("Failed to load icon: " + iconPath);
+		}
+
+		JButton button = new JButton(text, icon);
+		button.setHorizontalAlignment(SwingConstants.LEFT);
+		button.setIconTextGap(10);
 		button.addActionListener(e -> app.showScreen(panelName));
+
+		// Optional: make it visually consistent
+		button.setBackground(new Color(0, 128, 0));
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+
 		return button;
 	}
 }
