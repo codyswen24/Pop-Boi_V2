@@ -13,7 +13,7 @@ public class LibertyPrime extends ChatBot {
 	private stats playerStats;
 
 	public LibertyPrime(popBoiApp app, stats statsPanel) {
-		super(app);
+		super(app, statsPanel);
 		this.playerStats = statsPanel;
 
 		// Customize chat area colors
@@ -53,21 +53,33 @@ public class LibertyPrime extends ChatBot {
 	protected String generateResponse(String userInput) {
 		double roll = Math.random();
 
+		// 10% chance: heals player
 		if (roll < 0.10 && playerStats != null) {
 			playerStats.heal(50);
-			return "LIBERTY PRIME ADMINISTERS FIRST-AID! +50 HP RESTORED!";
+
+			// Give XP for helping the player
+			playerStats.gainXP(50);
+
+			return "LIBERTY PRIME ADMINISTERS FIRST-AID! +50 HP RESTORED! +50 XP";
 		}
 
+		// 15% chance: attacks player
 		if (roll < 0.25 && playerStats != null) {
-			playerStats.takeDamage(25);
-			return "COMMUNIST DETECTED. EXECUTING. -25 HP!";
+			int damage = 25;
+			playerStats.takeDamage(damage);
+
+			// Give XP for combat
+			playerStats.gainXP(30);
+
+			return "COMMUNIST DETECTED. EXECUTING. -" + damage + " HP! +30 XP";
 		}
 
-		if (roll < 0.65) {
-			return getResponses()[0] + " " + getResponses()[0];
+		// Otherwise, normal response (optional XP)
+		if (playerStats != null) {
+			playerStats.gainXP(5); // tiny XP for interacting
 		}
-
-		return super.generateResponse(userInput);
+		int index = (int) (Math.random() * getResponses().length);
+		return getResponses()[index] + " +5 XP";
 	}
 
 }
