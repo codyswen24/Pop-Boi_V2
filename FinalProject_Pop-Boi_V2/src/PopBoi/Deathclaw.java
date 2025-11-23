@@ -13,7 +13,7 @@ public class Deathclaw extends ChatBot {
 	private stats playerStats;
 
 	public Deathclaw(popBoiApp app, stats statsPanel) {
-		super(app);
+		super(app, statsPanel);
 		this.playerStats = statsPanel;
 
 		// Customize chat area colors
@@ -37,28 +37,33 @@ public class Deathclaw extends ChatBot {
 	protected String generateResponse(String userInput) {
 		double chance = Math.random();
 
-		// 10% chance to attack player
+		// 10% chance: Strong bite attack
 		if (chance < 0.10 && playerStats != null) {
 			int damage = 20;
 			playerStats.takeDamage(damage);
-			return "Deathclaw bites you for " + damage + " damage!";
+
+			// Give XP
+			playerStats.gainXP(30);
+
+			return "Deathclaw bites you for " + damage + " damage! +30 XP";
 		}
 
-		// 10% chance to attack player
+		// Next 10%: Weaker claw attack
 		if (chance < 0.20 && playerStats != null) {
 			int damage = 10;
 			playerStats.takeDamage(damage);
-			return "Deathclaw attacks you with it's claws for " + damage + " damage!";
-		}
 
-		// 30% chance to roar twice
-		if (chance < 0.40) {
-			return getResponses()[0] + " " + getResponses()[0];
+			// Give XP
+			playerStats.gainXP(15);
+
+			return "Deathclaw slashes you with its claws for " + damage + " damage! +15 XP";
 		}
 
 		// Otherwise, return a random normal response
+		if (playerStats != null)
+			playerStats.gainXP(5);
 		int index = (int) (Math.random() * getResponses().length);
-		return getResponses()[index];
+		return getResponses()[index] + " 5 XP";
 	}
 
 	@Override
