@@ -73,7 +73,7 @@ public class popBoiApp extends JFrame {
 		mainPanel.add(new blackJack(this), "Blackjack");
 		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
 		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
-		mainPanel.add(new Dogmeat(this, inventoryPanel), "Dogmeat");
+		mainPanel.add(new Dogmeat(this, inventoryPanel, statsPanel), "Dogmeat");
 
 		// Add the card layout to the frame
 		add(mainPanel, BorderLayout.CENTER);
