@@ -4,6 +4,7 @@ import java.awt.Color;
 
 /**
  * Subclass of ChatBot: Dogmeat
+ * 
  * @author SpencerS
  */
 public class Dogmeat extends ChatBot {
@@ -11,8 +12,8 @@ public class Dogmeat extends ChatBot {
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory;
 
-	public Dogmeat(popBoiApp app, Inventory inventory) {
-		super(app);
+	public Dogmeat(popBoiApp app, Inventory inventory, stats statsPanel) {
+		super(app, statsPanel);
 		this.inventory = inventory;
 
 		// Customize chat area colors
