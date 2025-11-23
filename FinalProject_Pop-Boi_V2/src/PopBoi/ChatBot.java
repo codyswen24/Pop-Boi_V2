@@ -18,14 +18,16 @@ public class ChatBot extends JPanel {
 	protected JTextArea chatArea;
 	protected JTextField inputField;
 	protected Random rand = new Random();
+	protected stats statsPanel; 
 
 	/**
 	 * Creates the object ChatBot
 	 * 
 	 * @param app
 	 */
-	public ChatBot(popBoiApp app) {
+	public ChatBot(popBoiApp app, stats statsPanel) {
 		this.app = app;
+		this.statsPanel = statsPanel;
 
 		setLayout(new BorderLayout());
 		setBackground(Color.decode("#0A2F0A"));
@@ -33,6 +35,8 @@ public class ChatBot extends JPanel {
 		createTitleBar();
 		createChatArea();
 		createInputField();
+		
+		
 	}
 
 	// =====================================================
@@ -112,18 +116,26 @@ public class ChatBot extends JPanel {
 		inputPanel.add(inputField, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 	}
+	
 
 	private void processInput() {
-		String text = inputField.getText().trim();
-		if (text.isEmpty())
-			return;
+	    String text = inputField.getText().trim();
+	    if (text.isEmpty()) return;
 
-		chatArea.append("You: " + text + "\n");
-		inputField.setText("");
+	    // Consume AP: 10 per message
+	    if (statsPanel.consumeAP(10)) {
+	        chatArea.append("You: " + text + "\n");
+	        inputField.setText("");
 
-		String reply = generateResponse(text);
-		chatArea.append(getBotName() + ": " + reply + "\n");
+	        String reply = generateResponse(text);
+	        chatArea.append(getBotName() + ": " + reply + "\n");
+	    } else {
+	        chatArea.append("You do not have enough AP to send a message!\n");
+	    }
 	}
+
+
+
 
 	protected String getBotName() {
 		return "Bot";
