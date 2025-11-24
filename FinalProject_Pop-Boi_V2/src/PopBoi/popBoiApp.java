@@ -23,6 +23,7 @@ public class popBoiApp extends JFrame {
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
 	private Inventory inventoryPanel;
+	MapScreen mapScreen = new MapScreen(this);
 	private stats statsPanel;
 
 	// Store all main menu buttons so we can highlight them
@@ -70,7 +71,7 @@ public class popBoiApp extends JFrame {
 		mainPanel.add(inventoryPanel, "Inventory");
 		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
 		mainPanel.add(new MapScreen(this), "Map");
-		mainPanel.add(new blackJack(this), "Blackjack");
+		mainPanel.add(new blackJack(this, inventoryPanel, mapScreen), "Blackjack");
 		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
 		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
 		mainPanel.add(new Dogmeat(this, inventoryPanel, statsPanel), "Dogmeat");
