@@ -132,7 +132,6 @@ public class Inventory extends JPanel {
 
 		// ---- ALL BUTTON ----
 		JButton allButton = new JButton("ALL");
-		allButton.setBounds(x, 90, 110, 20);
 		allButton.setBackground(CATEGORY_HIGHLIGHT); // Highlight by default
 		allButton.setFont(newFont);
 		allButton.addActionListener(e -> {
@@ -140,29 +139,64 @@ public class Inventory extends JPanel {
 			refreshList(allItems);
 			descriptionLabel.setText("Showing all items.");
 		});
-		add(allButton);
+		add(allButton, "cell 0 1,alignx left,aligny center");
 		categoryButtons.put("ALL", allButton);
 		x += 115;
 
 		// ---- CATEGORY BUTTONS ----
-		for (Category c : Category.values()) {
-			JButton btn = new JButton(c.name());
-			btn.setBounds(x, 90, 110, 20);
-			btn.setBackground(CATEGORY_DEFAULT);
-			btn.setFont(newFont);
-			btn.addActionListener(e -> {
-				highlightCategoryButton(c.name());
-				filterByCategory(c);
-			});
-			add(btn);
-			categoryButtons.put(c.name(), btn);
-			x += 115;
-		}
+		// ---- WEAPON ----
+		JButton weaponBtn = new JButton("WEAPON");
+		weaponBtn.setBackground(CATEGORY_DEFAULT);
+		weaponBtn.setFont(newFont);
+		weaponBtn.addActionListener(e -> {
+		    highlightCategoryButton("WEAPON");
+		    filterByCategory(Category.WEAPON);
+		});
+		add(weaponBtn, "cell 0 1,alignx right,aligny center");
+		categoryButtons.put("WEAPON", weaponBtn);
+		x += 115;
+
+		// ---- APPERAL ----
+		JButton apparelBtn = new JButton("APPERAL");
+		apparelBtn.setBackground(CATEGORY_DEFAULT);
+		apparelBtn.setFont(newFont);
+		apparelBtn.addActionListener(e -> {
+		    highlightCategoryButton("APPERAL");
+		    filterByCategory(Category.APPERAL);
+		});
+		add(apparelBtn, "cell 0 1,alignx right,aligny center");
+		categoryButtons.put("APPERAL", apparelBtn);
+		x += 115;
+
+		// ---- AID ----
+		JButton aidBtn = new JButton("AID");
+		aidBtn.setBackground(CATEGORY_DEFAULT);
+		aidBtn.setFont(newFont);
+		aidBtn.addActionListener(e -> {
+		    highlightCategoryButton("AID");
+		    filterByCategory(Category.AID);
+		});
+		add(aidBtn, "cell 0 1,alignx right,aligny center");
+		categoryButtons.put("AID", aidBtn);
+		x += 115;
+
+		// ---- MISC ----
+		JButton miscBtn = new JButton("MISC");
+		miscBtn.setBackground(CATEGORY_DEFAULT);
+		miscBtn.setFont(newFont);
+		miscBtn.addActionListener(e -> {
+		    highlightCategoryButton("MISC");
+		    filterByCategory(Category.MISC);
+		});
+		add(miscBtn, "cell 0 1,alignx right,aligny center");
+		categoryButtons.put("MISC", miscBtn);
+		x += 115;
 
 		// Load starting items
 		loadItems();
 		refreshList(allItems);
 	}
+
 
 	/**
 	 * Highlight the selected category button and reset others
@@ -309,3 +343,4 @@ public class Inventory extends JPanel {
 	    }
 	}
 }
+
