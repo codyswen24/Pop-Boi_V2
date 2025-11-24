@@ -22,7 +22,10 @@ public class blackJack extends JPanel {
 	
 	private JLabel lblStatus;
 	private JLabel lblMoney;
-	private JButton btnPlay;
+	private JTextField betField;
+	private JButton btnPlaceBet;
+
+	Color DEFAULT_GREEN = Color.decode("#145214");
 
 	private hand houseHand;
 	private hand playerHand;
@@ -30,13 +33,16 @@ public class blackJack extends JPanel {
 	private boolean revealDealerCard = false;
 	
 	private Inventory inventory;
+	private MapScreen map;
+	
 	private int currentBet = 0;
 
 	/**
 	 * Create the frame.
 	 */
-	public blackJack(popBoiApp app, Inventory inventory) {
+	public blackJack(popBoiApp app, Inventory inventory, MapScreen mapScreen) {
 		this.inventory = inventory;
+		this.map = mapScreen;
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
@@ -82,16 +88,27 @@ public class blackJack extends JPanel {
 	    housePanel.add(statusContainer, BorderLayout.SOUTH);
 
 	    //------status message --------
-	    lblStatus = new JLabel("Press PLAY to start!");
+	    lblStatus = new JLabel("Bet:");
 	    lblStatus.setForeground(new Color(0, 255, 0));
 	    statusContainer.add(lblStatus);
 
 	    //------ player panels & buttons ---------
 	    //------ play button ----------- 
-	    btnPlay = new JButton("PLAY");
-	    btnPlay.addActionListener(e -> startNewGame());
-	    statusContainer.add(btnPlay);
+	    betField = new JTextField(5); // small box
+	    btnPlaceBet = new JButton("Place Bet");
 
+	    statusContainer.add(betField);
+	    statusContainer.add(btnPlaceBet);
+	    btnPlaceBet.setBackground(DEFAULT_GREEN);
+	    btnPlaceBet.setForeground(Color.WHITE);
+	    btnPlaceBet.setFocusPainted(false);
+	    btnPlaceBet.setBorderPainted(false);
+	    // When pressed, validate the bet and start the game
+	    btnPlaceBet.addActionListener(e -> {
+	    	map.flashGreen(btnPlaceBet);
+	    	validateBet();
+	    });
+	    
 	    playerPanel = new JPanel();
 	    panel.add(playerPanel);
 	    playerPanel.setLayout(new BorderLayout(0, 0));
@@ -102,12 +119,26 @@ public class blackJack extends JPanel {
 
 	    //------ button to hit --------
 	    JButton btnHit = new JButton("Hit");
-	    btnHit.addActionListener(e -> playerHit());
+	    btnHit.setBackground(DEFAULT_GREEN);
+	    btnHit.setForeground(Color.WHITE);
+	    btnHit.setFocusPainted(false);
+		btnHit.setBorderPainted(false);
+	    btnHit.addActionListener(e -> {
+	    	map.flashGreen(btnHit);
+	    	playerHit();	
+	    });
 	    playerControls.add(btnHit);
 
 	    //------ button to stand --------
 	    JButton btnStand = new JButton("Stand");
-	    btnStand.addActionListener(e -> playerStand());
+	    btnStand.setBackground(DEFAULT_GREEN);
+	    btnStand.setForeground(Color.WHITE);
+	    btnStand.setFocusPainted(false);
+	    btnStand.setBorderPainted(false);
+	    btnStand.addActionListener(e -> {
+	    	map.flashGreen(btnStand);
+	    	playerStand();
+	    });
 	    playerControls.add(btnStand);
 
 	    playerCardPanel = new JPanel();
@@ -115,8 +146,7 @@ public class blackJack extends JPanel {
 	    playerPanel.add(playerCardPanel, BorderLayout.CENTER);
 
 	    //--------- money -----------
-	    //TODO
-	    lblMoney = new JLabel("Caps: " + inventory.getBottleCaps());
+	    lblMoney = new JLabel("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
 	    lblMoney.setForeground(new Color(0, 255, 0));
 	    add(lblMoney, BorderLayout.SOUTH);
 	}
@@ -202,9 +232,39 @@ public class blackJack extends JPanel {
 	    playerHand.add(deck.drawCard());
 
 	    updateUIViews();
-	    //removes play button when game starts
-	    btnPlay.setVisible(false);
 	    lblStatus.setText("Your turn!");
+	}
+	
+	/**
+	 * Validates the player bet and checks to see if they have enough caps to even play
+	 * run before the player is given cards
+	 * @author Cody Swensen
+	 */
+	private void validateBet() {
+		String input = betField.getText().trim();
+		if (!input.matches("\\d+")) {
+			lblStatus.setText("Enter a valid number");
+			return;
+		}
+		
+		currentBet = Integer.parseInt(input);
+		int caps = inventory.getBottleCaps();
+		
+		if (currentBet > caps) {
+			lblStatus.setText("Not enough Caps!");
+			return;
+		}
+		
+		if (currentBet <= 0) {
+			lblStatus.setText("Bet must be greater than 0");
+		}
+		
+		startNewGame();
+		inventory.spendBottleCaps(currentBet);
+		lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+		
+		betField.setVisible(false);
+		btnPlaceBet.setVisible(false);
 	}
 	
 	/**
@@ -218,8 +278,12 @@ public class blackJack extends JPanel {
 		//checks game logic
 		if (playerHand.getValue() > 21) {
 			revealDealerCard = true;
+			currentBet = 0;
+			lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
 			lblStatus.setText("You bust! Dealer wins.");
-			btnPlay.setVisible(true);
+			betField.setVisible(true);
+			btnPlaceBet.setVisible(true);
+			betField.setText("");
 			updateUIViews();
 	    }
 	}
@@ -240,16 +304,35 @@ public class blackJack extends JPanel {
 		//checks game logic
 		if (houseHand.getValue() > 21) {
 			lblStatus.setText("Dealer busts! You win!");
-			btnPlay.setVisible(true);
+			inventory.addBottleCaps(currentBet * 2);
+			currentBet = 0;
+			lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+			betField.setVisible(true);
+			btnPlaceBet.setVisible(true);
+			betField.setText("");
 	    } else if (playerHand.getValue() > houseHand.getValue()) {
 	    	lblStatus.setText("You win!");
-	    	btnPlay.setVisible(true);
+	    	inventory.addBottleCaps(currentBet * 2);
+	    	currentBet = 0;
+	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	betField.setVisible(true);
+	    	btnPlaceBet.setVisible(true);
+	    	betField.setText("");
 	    } else if (playerHand.getValue() < houseHand.getValue()) {
 	    	lblStatus.setText("Dealer wins!");
-	    	btnPlay.setVisible(true);
+	    	currentBet = 0;
+	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	betField.setVisible(true);
+	    	btnPlaceBet.setVisible(true);
+	    	betField.setText("");
 	    } else {
 	    	lblStatus.setText("It's a tie!");
-	    	btnPlay.setVisible(true);
+	    	inventory.addBottleCaps(currentBet);
+	    	currentBet = 0;
+	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	betField.setVisible(true);
+	    	btnPlaceBet.setVisible(true);
+	    	betField.setText("");
 	    }
 	}
 
