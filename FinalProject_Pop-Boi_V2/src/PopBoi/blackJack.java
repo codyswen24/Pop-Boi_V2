@@ -21,16 +21,22 @@ public class blackJack extends JPanel {
 	private JPanel playerCardPanel;
 	
 	private JLabel lblStatus;
-	
+	private JLabel lblMoney;
 	private JButton btnPlay;
 
 	private hand houseHand;
 	private hand playerHand;
 
+	private boolean revealDealerCard = false;
+	
+	private Inventory inventory;
+	private int currentBet = 0;
+
 	/**
 	 * Create the frame.
 	 */
-	public blackJack(popBoiApp app) {
+	public blackJack(popBoiApp app, Inventory inventory) {
+		this.inventory = inventory;
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
@@ -110,7 +116,7 @@ public class blackJack extends JPanel {
 
 	    //--------- money -----------
 	    //TODO
-	    JLabel lblMoney = new JLabel("Money: $100");
+	    lblMoney = new JLabel("Caps: " + inventory.getBottleCaps());
 	    lblMoney.setForeground(new Color(0, 255, 0));
 	    add(lblMoney, BorderLayout.SOUTH);
 	}
@@ -131,6 +137,7 @@ public class blackJack extends JPanel {
 
 	/**
 	 * This method displays the cards of the player and the house by first clearing the cards then taking what is stored in the house and repaints it every button press
+	 * When displaying the dealers hand the second card will remain upside down until the the game ends
 	 * @author Cody Swensen
 	 */
 	private void updateUIViews() {
@@ -138,8 +145,17 @@ public class blackJack extends JPanel {
 	    playerCardPanel.removeAll();
 
 	    // Add dealer cards
-	    for (card c : houseHand.getCards()) {
-	        houseCardPanel.add(createCardLabel(c));
+	    for (int i = 0; i < houseHand.getCards().size(); i++) {
+	    	card c = houseHand.getCards().get(i);
+	    	
+	    	if (i == 0) {
+	    		houseCardPanel.add(createCardLabel(c));
+	    	} else if (i == 1 && !revealDealerCard) {
+	    		houseCardPanel.add(createCardBack());
+	    	} else {
+	    		houseCardPanel.add(createCardLabel(c));
+	    	}
+	    	
 	    }
 
 	    // Add player cards
@@ -149,6 +165,20 @@ public class blackJack extends JPanel {
 
 	    revalidate();
 	    repaint();
+	}
+	
+	/**
+	 * this method creates an icon for the card back to hide part of the dealers hand
+	 * @return
+	 * @author Cody Swensen
+	 */
+	private JLabel createCardBack() {
+		ImageIcon icon = new ImageIcon(getClass().getResource("/PopBoi/Images/card_back.png"));
+		
+		Image scaled = icon.getImage().getScaledInstance(120, 180, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(scaled);
+		
+		return new JLabel(icon);
 	}
 
 	/**
@@ -160,6 +190,8 @@ public class blackJack extends JPanel {
 	    deck = new deck();
 	    playerHand = new hand();
 	    houseHand = new hand();
+	    
+	    revealDealerCard = false;
 
 	    //add 2 cards to house
 	    houseHand.add(deck.drawCard());
@@ -185,8 +217,10 @@ public class blackJack extends JPanel {
 		
 		//checks game logic
 		if (playerHand.getValue() > 21) {
+			revealDealerCard = true;
 			lblStatus.setText("You bust! Dealer wins.");
 			btnPlay.setVisible(true);
+			updateUIViews();
 	    }
 	}
 	
@@ -195,6 +229,7 @@ public class blackJack extends JPanel {
 	 * @author Cody Swensen
 	 */
 	private void playerStand() {
+		revealDealerCard = true;
 		//house always stands at 17 or higher
 		while (houseHand.getValue() < 17) {
 	        houseHand.add(deck.drawCard());
