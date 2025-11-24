@@ -1,3 +1,4 @@
+
 package PopBoi;
 
 import java.awt.BorderLayout;
@@ -261,5 +262,50 @@ public class Inventory extends JPanel {
 
 		allItems.add(new Item(name, description, category, amount));
 		refreshList(allItems);
+	}
+	
+	/**
+	 * Used to retrieve the amount of bottle caps the user has to later use for gambling
+	 * @return quantity of bottle caps
+	 * @author Cody Swensen
+	 */
+	public int getBottleCaps() {
+	    for (Item i : allItems) {
+	        if (i.name.equalsIgnoreCase("Bottle Caps")) {
+	            return i.quantity;
+	        }
+	    }
+	    return 0;
+	}
+	
+	/**
+	 * removes bottle caps from the inventory when the player looses during blackjack
+	 * @param amount
+	 * @author Cody Swensen
+	 */
+	public void spendBottleCaps(int amount) {
+	    for (Item i : allItems) {
+	        if (i.name.equalsIgnoreCase("Bottle Caps")) {
+	            i.quantity -= amount;
+	            if (i.quantity < 0) i.quantity = 0;
+	            refreshList(allItems);
+	            return;
+	        }
+	    }
+	}
+	
+	/**
+	 * adds bottle caps to the inventory when the player wins in blackjack
+	 * @param amount
+	 * @author Cody Swensen
+	 */
+	public void addBottleCaps(int amount) {
+	    for (Item i : allItems) {
+	        if (i.name.equalsIgnoreCase("Bottle Caps")) {
+	            i.quantity += amount;
+	            refreshList(allItems);
+	            return;
+	        }
+	    }
 	}
 }
