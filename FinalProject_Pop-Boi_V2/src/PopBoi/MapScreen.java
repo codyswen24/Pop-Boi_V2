@@ -89,7 +89,6 @@ public class MapScreen extends JPanel {
 		buttonPanel.add(btnPlus);
 
 		btnPlus.addActionListener(e -> {
-			flashGreen(btnPlus);
 			if (mapIndex < mapImage.length - 1) {
 				mapIndex++;
 				mapPanel.repaint();
@@ -97,7 +96,6 @@ public class MapScreen extends JPanel {
 		});
 
 		btnMinus.addActionListener(e -> {
-			flashGreen(btnMinus);
 			if (mapIndex > 0) {
 				mapIndex--;
 				mapPanel.repaint();
@@ -148,17 +146,6 @@ public class MapScreen extends JPanel {
 		g.drawString("Missing: " + text, 6, height / 2);
 		g.dispose();
 		return new ImageIcon(img);
-	}
-
-	private void flashGreen(JButton button) {
-		Color original = button.getBackground();
-		button.setBackground(Color.GREEN);
-
-		// Swing Timer resets the button after 1 second (1000ms)
-		new javax.swing.Timer(100, e -> {
-			button.setBackground(original);
-			((javax.swing.Timer) e.getSource()).stop();
-		}).start();
 	}
 
 }
