@@ -33,16 +33,15 @@ public class blackJack extends JPanel {
 	private boolean revealDealerCard = false;
 	
 	private Inventory inventory;
-	private MapScreen map;
 	
 	private int currentBet = 0;
 
 	/**
 	 * Create the frame.
 	 */
-	public blackJack(popBoiApp app, Inventory inventory, MapScreen mapScreen) {
+	public blackJack(popBoiApp app, Inventory inventory) {
 		this.inventory = inventory;
-		this.map = mapScreen;
+
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
@@ -105,7 +104,6 @@ public class blackJack extends JPanel {
 	    btnPlaceBet.setBorderPainted(false);
 	    // When pressed, validate the bet and start the game
 	    btnPlaceBet.addActionListener(e -> {
-	    	map.flashGreen(btnPlaceBet);
 	    	validateBet();
 	    });
 	    
@@ -124,7 +122,7 @@ public class blackJack extends JPanel {
 	    btnHit.setFocusPainted(false);
 		btnHit.setBorderPainted(false);
 	    btnHit.addActionListener(e -> {
-	    	map.flashGreen(btnHit);
+	    	
 	    	playerHit();	
 	    });
 	    playerControls.add(btnHit);
@@ -136,7 +134,7 @@ public class blackJack extends JPanel {
 	    btnStand.setFocusPainted(false);
 	    btnStand.setBorderPainted(false);
 	    btnStand.addActionListener(e -> {
-	    	map.flashGreen(btnStand);
+	    	
 	    	playerStand();
 	    });
 	    playerControls.add(btnStand);
