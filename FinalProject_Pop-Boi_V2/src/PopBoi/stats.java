@@ -1,151 +1,241 @@
 package PopBoi;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * The main method to run everything
+ * The stats menu that will show stats
  * 
  * @author SpencerS
+ * @author Alex
  */
-public class popBoiApp extends JFrame {
+public class stats extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private CardLayout cardLayout;
-	private JPanel mainPanel;
-	private Inventory inventoryPanel;
-	MapScreen mapScreen = new MapScreen(this);
-	private stats statsPanel;
+	// Health system variables
+	private int currentHP = 100;
+	private int maxHP = 100;
+	private JLabel HPLabel;
 
-	// Store all main menu buttons so we can highlight them
-	private Map<String, JButton> buttons = new HashMap<>();
+	// XP + Level system
+	private int level = 1;
+	private int currentXP = 0;
+	private int xpToLevel = 100;
 
-	// Default + Highlight colors
-	private final Color DEFAULT_COLOR = Color.decode("#145214");
-	private final Color HIGHLIGHT_COLOR = Color.decode("#2AFF2A");
+	private JLabel levelLabel;
+	private JProgressBar xpBar;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				popBoiApp frame = new popBoiApp();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
+	// Action Points
+	private int currentAP = 100;
+	private int maxAP = 100;
+	private JLabel APLabel;
 
 	/**
-	 * 
+	 * Create the panel.
 	 */
-	public popBoiApp() {
-		setTitle("Pop-Boi 3000");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 600);
-		setLocationRelativeTo(null);
+	public stats(popBoiApp app) {
+
+		// Entire panel background
+		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
-		// Create the menu bar
-		JPanel menuBar = createMainMenu();
-		add(menuBar, BorderLayout.NORTH);
+		// TOP TITLE
+		JLabel title = new JLabel("POP-BOI Stats", SwingConstants.CENTER);
+		title.setForeground(Color.GREEN);
+		title.setOpaque(false);
+		title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
+		add(title, BorderLayout.NORTH);
 
-		// Main screen area
-		cardLayout = new CardLayout();
-		mainPanel = new JPanel(cardLayout);
+		// CENTER CONTENT
+		JPanel centerPanel = new JPanel();
+		centerPanel.setBackground(Color.decode("#0A2F0A"));
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+		centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		// Create single instances of stats and inventory
-		statsPanel = new stats(this);
-		inventoryPanel = new Inventory(this);
+		// Load portrait
+		ImageIcon portrait = new ImageIcon(getClass().getResource("/PopBoi/Images/booleanbrothers.png"));
 
-		// Add screens using the same instances
-		mainPanel.add(statsPanel, "MainMenu");
-		mainPanel.add(inventoryPanel, "Inventory");
-		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
-		mainPanel.add(new MapScreen(this), "Map");
-		mainPanel.add(new blackJack(this, inventoryPanel), "Blackjack");
-		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
-		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
-		mainPanel.add(new Dogmeat(this, inventoryPanel, statsPanel), "Dogmeat");
+		// character label
+		JLabel character = new JLabel(portrait);
+		character.setPreferredSize(new Dimension(portrait.getIconWidth(), portrait.getIconHeight()));
+		character.setMaximumSize(character.getPreferredSize());
+		character.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		// Add the card layout to the frame
-		add(mainPanel, BorderLayout.CENTER);
+		// Add character
+		centerPanel.add(character);
 
-		// Highlight Stats button since it's the default screen
-		highlightButton("MainMenu");
+		// Weapon and Armor Resistances panel
+		JPanel resistances = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+		resistances.setBackground(Color.decode("#0A2F0A"));
 
-		setVisible(true);
+		Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 24);
+
+		String[] labels = { "🔫", "🎯 18", "🪖", "⚡ 5", "☢️ 10" };
+		for (String text : labels) {
+			JLabel lbl = new JLabel(text, SwingConstants.CENTER);
+			lbl.setFont(emojiFont);
+			lbl.setOpaque(true);
+			lbl.setBackground(new Color(0, 128, 64));
+			lbl.setForeground(new Color(7, 222, 17));
+			lbl.setPreferredSize(new Dimension(120, 40));
+			resistances.add(lbl);
+		}
+
+		centerPanel.add(resistances);
+
+		// Spacing
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+		// Player name
+		JLabel name = new JLabel("Boolean Brotherhood", SwingConstants.CENTER);
+		name.setOpaque(true);
+		name.setBackground(Color.decode("#0A2F0A"));
+		name.setForeground(new Color(7, 222, 17));
+		name.setPreferredSize(new Dimension(220, 30));
+		name.setMaximumSize(name.getPreferredSize());
+		name.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerPanel.add(name);
+
+		add(centerPanel, BorderLayout.CENTER);
+
+		// BOTTOM STATUS BAR
+		JPanel bottomBar = new JPanel();
+		bottomBar.setLayout(new GridBagLayout());
+		bottomBar.setBackground(new Color(0, 60, 0));
+		add(bottomBar, BorderLayout.SOUTH);
+
+		GridBagConstraints bbc = new GridBagConstraints();
+		bbc.insets = new Insets(5, 15, 5, 15);
+
+		// HP Label
+		HPLabel = new JLabel("HP: " + currentHP + "/" + maxHP, SwingConstants.CENTER);
+		HPLabel.setOpaque(true);
+		HPLabel.setBackground(new Color(0, 128, 64));
+		HPLabel.setForeground(new Color(7, 222, 17));
+		HPLabel.setPreferredSize(new Dimension(120, 30));
+		bbc.gridx = 0;
+		bottomBar.add(HPLabel, bbc);
+
+		// Level Label
+		levelLabel = new JLabel("Level: " + level, SwingConstants.CENTER);
+		levelLabel.setOpaque(true);
+		levelLabel.setBackground(new Color(0, 128, 64));
+		levelLabel.setForeground(new Color(7, 222, 17));
+		levelLabel.setPreferredSize(new Dimension(100, 30));
+		bbc.gridx = 1;
+		bottomBar.add(levelLabel, bbc);
+
+		// XP Bar
+		xpBar = new JProgressBar(0, xpToLevel);
+		xpBar.setValue(currentXP);
+		xpBar.setForeground(new Color(0, 200, 0));
+		xpBar.setBackground(new Color(0, 100, 50));
+		xpBar.setBorderPainted(false);
+		xpBar.setPreferredSize(new Dimension(300, 30));
+		bbc.gridx = 2;
+		bottomBar.add(xpBar, bbc);
+
+		// AP Label
+		APLabel = new JLabel("AP: " + currentAP + "/" + maxAP, SwingConstants.CENTER);
+		APLabel.setOpaque(true);
+		APLabel.setBackground(new Color(0, 128, 64));
+		APLabel.setForeground(new Color(7, 222, 17));
+		APLabel.setPreferredSize(new Dimension(120, 30));
+		bbc.gridx = 3;
+		bottomBar.add(APLabel, bbc);
+
+		// AP regeneration timer
+		javax.swing.Timer apRegenTimer = new javax.swing.Timer(2500, e -> restoreAP(10));
+		apRegenTimer.start();
 	}
 
 	/**
-	 * shows the screen of the button that was clicked
+	 * the XP you gain to level up
 	 * 
-	 * @param name
+	 * @param amount
 	 */
-	public void showScreen(String name) {
-		cardLayout.show(mainPanel, name);
-		highlightButton(name);
+	public void gainXP(int amount) {
+		currentXP += amount;
+		while (currentXP >= xpToLevel) {
+			currentXP -= xpToLevel;
+			level++;
+			xpToLevel += 50;
+		}
+		updateXP();
 	}
 
 	/**
-	 * every time the menu buttons are clicked the button that is clicked highlights
+	 * the level the player is at and the XP needed to level up
+	 */
+	private void updateXP() {
+		levelLabel.setText("Level: " + level);
+		xpBar.setMaximum(xpToLevel);
+		xpBar.setValue(currentXP);
+	}
+
+	/**
+	 * the damage the player takes
 	 * 
-	 * @param activeScreen
+	 * @param damage
 	 */
-	private void highlightButton(String activeScreen) {
-		buttons.forEach((screenName, button) -> {
-			if (screenName.equals(activeScreen)) {
-				button.setBackground(HIGHLIGHT_COLOR);
-			} else {
-				button.setBackground(DEFAULT_COLOR);
-			}
-		});
+	public void takeDamage(int damage) {
+		currentHP -= damage;
+		if (currentHP < 0)
+			currentHP = 0;
+		updateHP();
 	}
 
 	/**
-	 * Create top button menu
-	 */
-	private JPanel createMainMenu() {
-		JPanel menu = new JPanel();
-		menu.setBackground(Color.decode("#0F3D0F"));
-		menu.setLayout(new GridLayout(1, 5, 5, 0));
-
-		addMenuButton(menu, "MainMenu", "Stats");
-		addMenuButton(menu, "Inventory", "Inventory");
-		addMenuButton(menu, "ChatSelect", "Chat-Bot");
-		addMenuButton(menu, "Map", "Map");
-		addMenuButton(menu, "Blackjack", "Blackjack");
-
-		return menu;
-	}
-
-	/**
-	 * adds the menu buttons at the top of all screens
+	 * the amount of HP the player heals
 	 * 
-	 * @param panel
-	 * @param screenName
-	 * @param label
+	 * @param amount
 	 */
-	private void addMenuButton(JPanel panel, String screenName, String label) {
-		JButton btn = new JButton(label);
-		btn.setBackground(DEFAULT_COLOR);
-		btn.setForeground(Color.WHITE);
+	public void heal(int amount) {
+		currentHP += amount;
+		if (currentHP > maxHP)
+			currentHP = maxHP;
+		updateHP();
+	}
 
-		btn.setFocusPainted(false);
-		btn.setBorderPainted(false);
-		btn.setContentAreaFilled(true);
+	/**
+	 * Updates the HP
+	 */
+	private void updateHP() {
+		HPLabel.setText("HP: " + currentHP + "/" + maxHP);
+	}
 
-		btn.addActionListener(e -> showScreen(screenName));
+	/**
+	 * Takes AP to do certain actions
+	 * 
+	 * @param amount
+	 * @return
+	 */
+	public boolean consumeAP(int amount) {
+		if (currentAP >= amount) {
+			currentAP -= amount;
+			updateAP();
+			return true;
+		}
+		return false;
+	}
 
-		buttons.put(screenName, btn);
-		panel.add(btn);
+	/**
+	 * The amount the AP restores
+	 * 
+	 * @param amount
+	 */
+	public void restoreAP(int amount) {
+		currentAP += amount;
+		if (currentAP > maxAP)
+			currentAP = maxAP;
+		updateAP();
+	}
+
+	/**
+	 * Updates the AP in the stats menu
+	 */
+	private void updateAP() {
+		APLabel.setText("AP: " + currentAP + "/" + maxAP);
 	}
 }
