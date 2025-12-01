@@ -1,3 +1,4 @@
+
 package PopBoi;
 
 import java.awt.EventQueue;
@@ -71,7 +72,7 @@ public class popBoiApp extends JFrame {
 		mainPanel.add(inventoryPanel, "Inventory");
 		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
 		mainPanel.add(new MapScreen(this), "Map");
-		mainPanel.add(new blackJack(this, inventoryPanel), "Blackjack");
+		mainPanel.add(new blackJack(this, inventoryPanel, statsPanel), "Blackjack");
 		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
 		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
 		mainPanel.add(new Dogmeat(this, inventoryPanel, statsPanel), "Dogmeat");
