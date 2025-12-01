@@ -1,22 +1,14 @@
 
+
 package PopBoi;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import java.util.Map;
-import java.util.HashMap;
+import java.io.*;
+import javax.swing.*;
 
 public class Inventory extends JPanel {
 
@@ -28,6 +20,9 @@ public class Inventory extends JPanel {
 	private Map<String, JButton> categoryButtons = new HashMap<>();
 	private final Color CATEGORY_DEFAULT = new Color(0, 128, 0);
 	private final Color CATEGORY_HIGHLIGHT = new Color(0, 255, 0);
+	
+	//text file to have Persistent saves
+	private static final String SAVE_FILE = "inventory.txt";
 
 	// Public so Dogmeat & LibertyPrime can access it
 	public enum Category {
@@ -217,17 +212,74 @@ public class Inventory extends JPanel {
 		descriptionLabel.setText("Showing all items.");
 	}
 
-	// ---- DEFAULT INVENTORY CONTENTS ----
+	// ---- LOAD INVENTORY CONTENTS ----
+	/**
+	 * This method checks to see if inventory file exists.
+	 * If it does it will read the file and create the objects based off of the file
+	 * @Cody Swensen
+	 */
 	private void loadItems() {
+		File file = new File(SAVE_FILE);
+		
+		if (!file.exists()) {
+			loadDefaultItems();
+			saveToFile();
+			return;
+		}
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String line;
+			
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split("\\|");
+				if (parts.length != 4) continue;
+				
+				String name = parts[0];
+				String desc = parts[1];
+				Category cat = Category.valueOf(parts[2]);
+				int qty = Integer.parseInt(parts[3]);
+				
+				allItems.add(new Item(name, desc, cat, qty));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			allItems.clear();
+			
+			loadDefaultItems();
+		}
+	}
+	
+	/**
+	 * creates the default inventory items
+	 * @author Alex Lynch
+	 */
+	private void loadDefaultItems() {
 		allItems.add(new Item("Stimpak", "Restores health.", Category.AID, 3));
-		allItems.add(new Item("RadAway", "Flushes radiation.", Category.AID, 2));
-		allItems.add(new Item("Nuka Cola", "A refreshing soft drink.", Category.AID, 5));
-		allItems.add(new Item("Bottle Caps", "Wasteland currency.", Category.MISC, 412));
-		allItems.add(new Item("10mm Ammo", "Standard pistol ammo.", Category.WEAPON, 120));
-		allItems.add(new Item("5.56mm Ammo", "Rifle ammo.", Category.WEAPON, 90));
-		allItems.add(new Item("Laser Rifle", "Energy weapon.", Category.WEAPON, 1));
-		allItems.add(new Item("Combat Knife", "Light melee weapon.", Category.WEAPON, 1));
-		allItems.add(new Item("Raider Jacket", "Raider armor.", Category.APPERAL, 1));
+	    allItems.add(new Item("RadAway", "Flushes radiation.", Category.AID, 2));
+	    allItems.add(new Item("Nuka Cola", "A refreshing soft drink.", Category.AID, 5));
+	    allItems.add(new Item("Bottle Caps", "Wasteland currency.", Category.MISC, 412));
+	    allItems.add(new Item("10mm Ammo", "Standard pistol ammo.", Category.WEAPON, 120));
+	    allItems.add(new Item("5.56mm Ammo", "Rifle ammo.", Category.WEAPON, 90));
+	    allItems.add(new Item("Laser Rifle", "Energy weapon.", Category.WEAPON, 1));
+	    allItems.add(new Item("Combat Knife", "Light melee weapon.", Category.WEAPON, 1));
+	    allItems.add(new Item("Raider Jacket", "Raider armor.", Category.APPERAL, 1));
+	}
+	
+	/**
+	 * This method writes current inventory to the file to save items and progress
+	 * @author Cody Swensen
+	 */
+	public void saveToFile() {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(SAVE_FILE))) {
+			for (Item i : allItems) {
+				writer.println(i.name + "|" + i.description + "|" + i.category + "|" + i.quantity);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private Item getSelectedItem() {
@@ -253,6 +305,8 @@ public class Inventory extends JPanel {
 		item.quantity -= amount;
 		refreshList(allItems);
 		itemList.setSelectedValue(item.toString(), true);
+
+		saveToFile();
 	}
 
 	private void dropAll() {
@@ -263,6 +317,8 @@ public class Inventory extends JPanel {
 		allItems.remove(item);
 		refreshList(allItems);
 		descriptionLabel.setText("Item dropped.");
+		
+		saveToFile();
 	}
 
 	private void filterByCategory(Category category) {
@@ -296,6 +352,8 @@ public class Inventory extends JPanel {
 
 		allItems.add(new Item(name, description, category, amount));
 		refreshList(allItems);
+
+		saveToFile();
 	}
 	
 	/**
@@ -326,6 +384,8 @@ public class Inventory extends JPanel {
 	            return;
 	        }
 	    }
+	    
+	    saveToFile();
 	}
 	
 	/**
@@ -341,6 +401,8 @@ public class Inventory extends JPanel {
 	            return;
 	        }
 	    }
+	    
+	    saveToFile();
 	}
 }
 
