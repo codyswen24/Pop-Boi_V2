@@ -217,6 +217,10 @@ public class blackJack extends JPanel {
 		return new JLabel(icon);
 	}
 	
+	/**
+	 * updates the cap label an bet amount
+	 * @author Cody Swensen
+	 */
 	public void updateCapsBlackjack() {
 		lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
 	}
