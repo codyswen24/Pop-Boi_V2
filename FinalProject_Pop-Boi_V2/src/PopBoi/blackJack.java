@@ -13,13 +13,18 @@ import javax.swing.JPanel;
 public class blackJack extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private stats playerStats;
+	private Inventory inventory;
+	
+	//pulled from other classes
 	private deck deck;
+	private hand houseHand;
+	private hand playerHand;
 	   
 	private JPanel housePanel;
 	private JPanel playerPanel;
 	private JPanel houseCardPanel;
 	private JPanel playerCardPanel;
-	
 	private JLabel lblStatus;
 	private JLabel lblMoney;
 	private JTextField betField;
@@ -27,25 +32,28 @@ public class blackJack extends JPanel {
 
 	Color DEFAULT_GREEN = Color.decode("#145214");
 
-	private hand houseHand;
-	private hand playerHand;
-
 	private boolean revealDealerCard = false;
-	
-	private Inventory inventory;
-	
 	private int currentBet = 0;
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public blackJack(popBoiApp app, Inventory inventory) {
+	public blackJack(popBoiApp app, Inventory inventory, stats statsPanel) {
 		this.inventory = inventory;
+		this.playerStats = statsPanel;
 
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
 
 		createHouseAndUserPanels();
+		
+		this.addComponentListener(new java.awt.event.ComponentAdapter() {
+		    @Override
+		    public void componentShown(java.awt.event.ComponentEvent e) {
+		    	updateCapsBlackjack();
+		    }
+		});
 	}
 
 	/**
@@ -208,6 +216,10 @@ public class blackJack extends JPanel {
 		
 		return new JLabel(icon);
 	}
+	
+	public void updateCapsBlackjack() {
+		lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	}
 
 	/**
 	 * THis method is run when the player first clicks play
@@ -259,7 +271,7 @@ public class blackJack extends JPanel {
 		
 		startNewGame();
 		inventory.spendBottleCaps(currentBet);
-		lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+		updateCapsBlackjack();
 		
 		betField.setVisible(false);
 		btnPlaceBet.setVisible(false);
@@ -277,7 +289,8 @@ public class blackJack extends JPanel {
 		if (playerHand.getValue() > 21) {
 			revealDealerCard = true;
 			currentBet = 0;
-			lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+			playerStats.gainXP(5);
+			updateCapsBlackjack();
 			lblStatus.setText("You bust! Dealer wins.");
 			betField.setVisible(true);
 			btnPlaceBet.setVisible(true);
@@ -304,7 +317,8 @@ public class blackJack extends JPanel {
 			lblStatus.setText("Dealer busts! You win!");
 			inventory.addBottleCaps(currentBet * 2);
 			currentBet = 0;
-			lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+			playerStats.gainXP(15);
+			updateCapsBlackjack();
 			betField.setVisible(true);
 			btnPlaceBet.setVisible(true);
 			betField.setText("");
@@ -312,14 +326,15 @@ public class blackJack extends JPanel {
 	    	lblStatus.setText("You win!");
 	    	inventory.addBottleCaps(currentBet * 2);
 	    	currentBet = 0;
-	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
 	    	betField.setText("");
 	    } else if (playerHand.getValue() < houseHand.getValue()) {
 	    	lblStatus.setText("Dealer wins!");
 	    	currentBet = 0;
-	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	playerStats.gainXP(5);
+	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
 	    	betField.setText("");
@@ -327,7 +342,8 @@ public class blackJack extends JPanel {
 	    	lblStatus.setText("It's a tie!");
 	    	inventory.addBottleCaps(currentBet);
 	    	currentBet = 0;
-	    	lblMoney.setText("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
+	    	playerStats.gainXP(5);
+	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
 	    	betField.setText("");
