@@ -289,7 +289,7 @@ public class blackJack extends JPanel {
 		if (playerHand.getValue() > 21) {
 			revealDealerCard = true;
 			currentBet = 0;
-			playerStats.gainXP(5);
+			playerStats.gainXP(10);
 			updateCapsBlackjack();
 			lblStatus.setText("You bust! Dealer wins.");
 			betField.setVisible(true);
@@ -317,7 +317,7 @@ public class blackJack extends JPanel {
 			lblStatus.setText("Dealer busts! You win!");
 			inventory.addBottleCaps(currentBet * 2);
 			currentBet = 0;
-			playerStats.gainXP(15);
+			playerStats.gainXP(90);
 			updateCapsBlackjack();
 			betField.setVisible(true);
 			btnPlaceBet.setVisible(true);
@@ -326,6 +326,7 @@ public class blackJack extends JPanel {
 	    	lblStatus.setText("You win!");
 	    	inventory.addBottleCaps(currentBet * 2);
 	    	currentBet = 0;
+	    	playerStats.gainXP(100);
 	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
@@ -333,7 +334,7 @@ public class blackJack extends JPanel {
 	    } else if (playerHand.getValue() < houseHand.getValue()) {
 	    	lblStatus.setText("Dealer wins!");
 	    	currentBet = 0;
-	    	playerStats.gainXP(5);
+	    	playerStats.gainXP(10);
 	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
@@ -342,7 +343,7 @@ public class blackJack extends JPanel {
 	    	lblStatus.setText("It's a tie!");
 	    	inventory.addBottleCaps(currentBet);
 	    	currentBet = 0;
-	    	playerStats.gainXP(5);
+	    	playerStats.gainXP(15);
 	    	updateCapsBlackjack();
 	    	betField.setVisible(true);
 	    	btnPlaceBet.setVisible(true);
