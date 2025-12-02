@@ -61,7 +61,7 @@ public class LibertyPrime extends ChatBot {
 			// Give XP for helping the player
 			playerStats.gainXP(30);
 
-			return "LIBERTY PRIME ADMINISTERS FIRST-AID! +50 HP RESTORED! +50 XP";
+			return "LIBERTY PRIME ADMINISTERS FIRST-AID! +50 HP RESTORED! +30 XP";
 		}
 
 		// 15% chance: attacks player
@@ -72,7 +72,7 @@ public class LibertyPrime extends ChatBot {
 			// Give XP for combat
 			playerStats.gainXP(20);
 
-			return "COMMUNIST DETECTED. EXECUTING. -" + damage + " HP! +30 XP";
+			return "COMMUNIST DETECTED. EXECUTING. -" + damage + " HP! +20 XP";
 		}
 
 		// normal response
