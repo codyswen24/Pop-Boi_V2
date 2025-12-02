@@ -386,4 +386,27 @@ public class blackJack extends JPanel {
 		}
 	}
 
+	/**
+	 * Resets the black jack screen after player dies
+	 * 
+	 * @author SpencerS
+	 * @author Cody Swensen
+	 */
+	public void resetBJ() {
+		playerHand = null;
+		houseHand = null;
+		deck = null;
+
+		houseCardPanel.removeAll();
+		playerCardPanel.removeAll();
+
+		lblStatus.setText("bet:");
+
+		btnPlaceBet.setVisible(true);
+		updateCapsBlackjack();
+		revalidate();
+		repaint();
+
+	}
+
 }
