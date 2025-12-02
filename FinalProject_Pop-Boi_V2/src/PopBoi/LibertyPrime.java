@@ -48,6 +48,7 @@ public class LibertyPrime extends ChatBot {
 
 	/**
 	 * has a chance to either heal or damage the player.
+	 * @author SpencerS
 	 */
 	@Override
 	protected String generateResponse(String userInput) {
@@ -74,9 +75,9 @@ public class LibertyPrime extends ChatBot {
 			return "COMMUNIST DETECTED. EXECUTING. -" + damage + " HP! +30 XP";
 		}
 
-		// Otherwise, normal response (optional XP)
+		// normal response
 		if (playerStats != null) {
-			playerStats.gainXP(5); // tiny XP for interacting
+			playerStats.gainXP(5);
 		}
 		int index = (int) (Math.random() * getResponses().length);
 		return getResponses()[index] + " +5 XP";
