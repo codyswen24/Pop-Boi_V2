@@ -34,6 +34,8 @@ public class ChatSelectionPanel extends JPanel {
 	/**
 	 * creates the buttons with icon
 	 * 
+	 * @author SpencerS
+	 * 
 	 * @param text      Button label
 	 * @param panelName Screen to switch to
 	 * @param iconPath  Path to the image inside resources
@@ -44,7 +46,7 @@ public class ChatSelectionPanel extends JPanel {
 		ImageIcon icon = null;
 		try {
 			icon = new ImageIcon(getClass().getResource(iconPath));
-			// Optional: scale icon to fit nicely
+
 			Image img = icon.getImage();
 			Image scaledImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			icon = new ImageIcon(scaledImg);
@@ -57,7 +59,6 @@ public class ChatSelectionPanel extends JPanel {
 		button.setIconTextGap(10);
 		button.addActionListener(e -> app.showScreen(panelName));
 
-		// Optional: make it visually consistent
 		button.setBackground(new Color(0, 128, 0));
 		button.setForeground(Color.WHITE);
 		button.setFocusPainted(false);
