@@ -18,10 +18,12 @@ public class ChatBot extends JPanel {
 	protected JTextArea chatArea;
 	protected JTextField inputField;
 	protected Random rand = new Random();
-	protected stats statsPanel; 
+	protected stats statsPanel;
 
 	/**
 	 * Creates the object ChatBot
+	 * 
+	 * @author SpencerS
 	 * 
 	 * @param app
 	 */
@@ -35,14 +37,10 @@ public class ChatBot extends JPanel {
 		createTitleBar();
 		createChatArea();
 		createInputField();
-		
-		
+
 	}
 
-	// =====================================================
-	// =============== OVERRIDABLE METHODS =================
-	// =====================================================
-
+	// OVERRIDABLE METHODS
 	protected String[] getResponses() {
 		return new String[] { "Hello there!", "How can I help you?", "Interesting...", "Tell me more!",
 				"I'm not sure about that.", "Haha, that's funny!", "Good question!" };
@@ -62,14 +60,15 @@ public class ChatBot extends JPanel {
 		return "/PopBoi/Images/DOGMEAT.png";
 	}
 
-	// =====================================================
-	// ===================== UI SETUP =====================
-	// =====================================================
-
+	/**
+	 * UI SETUP
+	 * 
+	 * @author SpencerS
+	 */
 	private void createTitleBar() {
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground(Color.decode("#0A2F0A"));
-		bar.setPreferredSize(new Dimension(0, 50)); // reduce height
+		bar.setPreferredSize(new Dimension(0, 50));
 
 		// Title label
 		JLabel lblTitle = new JLabel(getTitle(), SwingConstants.CENTER);
@@ -91,6 +90,11 @@ public class ChatBot extends JPanel {
 		add(bar, BorderLayout.NORTH);
 	}
 
+	/**
+	 * the area in which to chat
+	 * 
+	 * @author SpencerS
+	 */
 	private void createChatArea() {
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);
@@ -100,6 +104,11 @@ public class ChatBot extends JPanel {
 		add(new JScrollPane(chatArea), BorderLayout.CENTER);
 	}
 
+	/**
+	 * the input field
+	 * 
+	 * @author SpencerS
+	 */
 	private void createInputField() {
 		JPanel inputPanel = new JPanel(new BorderLayout());
 		inputPanel.setBackground(new Color(20, 60, 20));
@@ -116,26 +125,28 @@ public class ChatBot extends JPanel {
 		inputPanel.add(inputField, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 	}
-	
 
+	/**
+	 * processes the input the user gives
+	 * 
+	 * @author SpencerS
+	 */
 	private void processInput() {
-	    String text = inputField.getText().trim();
-	    if (text.isEmpty()) return;
+		String text = inputField.getText().trim();
+		if (text.isEmpty())
+			return;
 
-	    // Consume AP: 10 per message
-	    if (statsPanel.consumeAP(10)) {
-	        chatArea.append("You: " + text + "\n");
-	        inputField.setText("");
+		// Consume AP: 10 per message
+		if (statsPanel.consumeAP(10)) {
+			chatArea.append("You: " + text + "\n");
+			inputField.setText("");
 
-	        String reply = generateResponse(text);
-	        chatArea.append(getBotName() + ": " + reply + "\n");
-	    } else {
-	        chatArea.append("You do not have enough AP to send a message!\n");
-	    }
+			String reply = generateResponse(text);
+			chatArea.append(getBotName() + ": " + reply + "\n");
+		} else {
+			chatArea.append("You do not have enough AP to send a message!\n");
+		}
 	}
-
-
-
 
 	protected String getBotName() {
 		return "Bot";
