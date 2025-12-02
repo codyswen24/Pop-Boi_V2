@@ -32,6 +32,7 @@ public class Deathclaw extends ChatBot {
 
 	/**
 	 * has a chance to attack the player
+	 * @author SpencerS
 	 */
 	@Override
 	protected String generateResponse(String userInput) {
@@ -59,7 +60,7 @@ public class Deathclaw extends ChatBot {
 			return "Deathclaw slashes you with its claws for " + damage + " damage! +15 XP";
 		}
 
-		// Otherwise, return a random normal response
+		// Otherwise return a random normal response
 		if (playerStats != null)
 			playerStats.gainXP(5);
 		int index = (int) (Math.random() * getResponses().length);
