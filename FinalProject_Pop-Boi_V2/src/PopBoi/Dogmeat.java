@@ -49,6 +49,7 @@ public class Dogmeat extends ChatBot {
 
 	/**
 	 * has a chance to bring you items to put in your inventory
+	 * @author SpencerS
 	 */
 	@Override
 	protected String generateResponse(String userInput) {
