@@ -19,8 +19,8 @@ public class Dogmeat extends ChatBot {
 		this.playerStats = statsPanel;
 
 		// Customize chat area colors
-		chatArea.setBackground(new Color(10, 25, 10)); // dark green
-		chatArea.setForeground(new Color(200, 200, 0)); // yellowish text
+		chatArea.setBackground(new Color(10, 25, 10));
+		chatArea.setForeground(new Color(200, 200, 0));
 
 		inputField.setBackground(new Color(15, 30, 15));
 		inputField.setForeground(new Color(200, 200, 0));
@@ -49,6 +49,7 @@ public class Dogmeat extends ChatBot {
 
 	/**
 	 * has a chance to bring you items to put in your inventory
+	 * 
 	 * @author SpencerS
 	 */
 	@Override
