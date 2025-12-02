@@ -44,9 +44,9 @@ public class Deathclaw extends ChatBot {
 			playerStats.takeDamage(damage);
 
 			// Give XP
-			playerStats.gainXP(30);
+			playerStats.gainXP(20);
 
-			return "Deathclaw bites you for " + damage + " damage! +30 XP";
+			return "Deathclaw bites you for " + damage + " damage! +20 XP";
 		}
 
 		// Next 10%: Weaker claw attack
@@ -55,9 +55,9 @@ public class Deathclaw extends ChatBot {
 			playerStats.takeDamage(damage);
 
 			// Give XP
-			playerStats.gainXP(15);
+			playerStats.gainXP(10);
 
-			return "Deathclaw slashes you with its claws for " + damage + " damage! +15 XP";
+			return "Deathclaw slashes you with its claws for " + damage + " damage! +10 XP";
 		}
 
 		// Otherwise return a random normal response
