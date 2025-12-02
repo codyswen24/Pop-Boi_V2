@@ -1,5 +1,6 @@
 
 
+
 package PopBoi;
 
 import java.awt.BorderLayout;
@@ -340,7 +341,7 @@ public class Inventory extends JPanel {
 	 * @param description
 	 * @param category
 	 */
-	// ---- ADD ITEM WITH SPECIFIED QUANTITY ----
+	//ADD ITEM WITH SPECIFIED QUANTITY
 	public void addItem(String name, String description, Category category, int amount) {
 		for (Item i : allItems) {
 			if (i.name.equalsIgnoreCase(name)) {
@@ -404,5 +405,20 @@ public class Inventory extends JPanel {
 	    
 	    saveToFile();
 	}
+	
+	/**
+	 * Resets all defaultItems
+	 * @author SpencerS
+	 */
+	public void resetInventory() {
+		allItems.clear();
+		loadDefaultItems(); 
+		showAllCategory();  
+		saveToFile();
+		
+	}
 }
+
+	
+	
 
