@@ -19,7 +19,7 @@ public class MapScreen extends JPanel {
 
 	/**
 	 * Makes the Map panel
-	 * 
+	 * @author SpencerS
 	 * @param app
 	 */
 	public MapScreen(popBoiApp app) {
@@ -44,7 +44,7 @@ public class MapScreen extends JPanel {
 		// Map switch panel
 		JPanel mapPanel = new JPanel() {
 			/**
-			 * 
+			 * @author SpencerS
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -79,7 +79,6 @@ public class MapScreen extends JPanel {
 		btnPlus.setBackground(DEFAULT_GREEN);
 		btnPlus.setForeground(Color.WHITE);
 
-		// Optional: Matches other buttons visually
 		btnMinus.setFocusPainted(false);
 		btnMinus.setBorderPainted(false);
 		btnPlus.setFocusPainted(false);
@@ -106,6 +105,7 @@ public class MapScreen extends JPanel {
 
 	/**
 	 * this loads the map images from Images/MapImages
+	 * @author SpencerS
 	 */
 	private void loadImages() {
 		mapImage = new ImageIcon[] { loadIcon("/PopBoi/Images/taylorsvilleMapBig.jpg", "bigMap"),
@@ -115,7 +115,7 @@ public class MapScreen extends JPanel {
 
 	/**
 	 * this is the method makes a object from a image
-	 * 
+	 * @author SpencerS
 	 * @param path
 	 * @param name
 	 * @return
@@ -131,7 +131,7 @@ public class MapScreen extends JPanel {
 
 	/**
 	 * this transitions the object images and adds them to the panel
-	 * 
+	 * @author SpencerS
 	 * @param width
 	 * @param height
 	 * @param text
