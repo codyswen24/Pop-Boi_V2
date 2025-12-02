@@ -1,7 +1,9 @@
+
 package PopBoi;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 /**
  * The stats menu that will show stats
@@ -30,6 +32,8 @@ public class stats extends JPanel {
 	private int currentAP = 100;
 	private int maxAP = 100;
 	private JLabel APLabel;
+	
+	private static final String SAVE_FILE_STATS = "stats.txt";
 
 	/**
 	 * Create the panel.
@@ -148,8 +152,64 @@ public class stats extends JPanel {
 		// AP regeneration timer
 		javax.swing.Timer apRegenTimer = new javax.swing.Timer(2500, e -> restoreAP(10));
 		apRegenTimer.start();
+		
+		loadStats();
 	}
 
+	public void loadStats() {
+	    File file = new File(SAVE_FILE_STATS);
+
+	    if (!file.exists()) {
+	        System.out.println("No stats file found — using defaults.");
+	        return;
+	    }
+
+	    try {
+	        java.util.Scanner scan = new java.util.Scanner(file);
+
+	        level = Integer.parseInt(scan.nextLine());
+	        currentXP = Integer.parseInt(scan.nextLine());
+	        xpToLevel = Integer.parseInt(scan.nextLine());
+	        currentHP = Integer.parseInt(scan.nextLine());
+	        maxHP = Integer.parseInt(scan.nextLine());
+	        currentAP = Integer.parseInt(scan.nextLine());
+	        maxAP = Integer.parseInt(scan.nextLine());
+
+	        scan.close();
+
+	        // Refresh UI
+	        updateHP();
+	        updateAP();
+	        updateXP();
+
+	        System.out.println("Stats loaded.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void saveStats() {
+	    try {
+	        File file = new File(SAVE_FILE_STATS);
+
+	        java.io.PrintWriter out = new java.io.PrintWriter(file);
+
+	        out.println(level);
+	        out.println(currentXP);
+	        out.println(xpToLevel);
+	        out.println(currentHP);
+	        out.println(maxHP);
+	        out.println(currentAP);
+	        out.println(maxAP);
+
+	        out.close();
+
+	        System.out.println("Stats saved.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	/**
 	 * the XP you gain to level up
 	 * 
@@ -163,6 +223,7 @@ public class stats extends JPanel {
 			xpToLevel += 50;
 		}
 		updateXP();
+		saveStats();
 	}
 
 	/**
@@ -184,6 +245,7 @@ public class stats extends JPanel {
 		if (currentHP < 0)
 			currentHP = 0;
 		updateHP();
+		saveStats();
 	}
 
 	/**
@@ -215,6 +277,7 @@ public class stats extends JPanel {
 		if (currentAP >= amount) {
 			currentAP -= amount;
 			updateAP();
+			saveStats();
 			return true;
 		}
 		return false;
@@ -230,6 +293,7 @@ public class stats extends JPanel {
 		if (currentAP > maxAP)
 			currentAP = maxAP;
 		updateAP();
+		saveStats();
 	}
 
 	/**
