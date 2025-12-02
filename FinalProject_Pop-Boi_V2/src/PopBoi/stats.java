@@ -1,19 +1,22 @@
-
 package PopBoi;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.io.File;
 
 /**
  * The stats menu that will show stats
  * 
  * @author SpencerS
- * @author Alex
+ * 
  */
 public class stats extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+
+	private popBoiApp app;
 
 	// Health system variables
 	private int currentHP = 100;
@@ -34,12 +37,15 @@ public class stats extends JPanel {
 	private JLabel APLabel;
 	
 	private static final String SAVE_FILE_STATS = "stats.txt";
+	
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @author SpencerS
 	 */
 	public stats(popBoiApp app) {
-
+		this.app = app;
 		// Entire panel background
 		setBackground(Color.decode("#0A2F0A"));
 		setLayout(new BorderLayout());
@@ -155,7 +161,7 @@ public class stats extends JPanel {
 		
 		loadStats();
 	}
-
+	
 	public void loadStats() {
 	    File file = new File(SAVE_FILE_STATS);
 
@@ -172,14 +178,12 @@ public class stats extends JPanel {
 	        xpToLevel = Integer.parseInt(scan.nextLine());
 	        currentHP = Integer.parseInt(scan.nextLine());
 	        maxHP = Integer.parseInt(scan.nextLine());
-	        currentAP = Integer.parseInt(scan.nextLine());
 	        maxAP = Integer.parseInt(scan.nextLine());
 
 	        scan.close();
 
 	        // Refresh UI
 	        updateHP();
-	        updateAP();
 	        updateXP();
 
 	        System.out.println("Stats loaded.");
@@ -199,7 +203,6 @@ public class stats extends JPanel {
 	        out.println(xpToLevel);
 	        out.println(currentHP);
 	        out.println(maxHP);
-	        out.println(currentAP);
 	        out.println(maxAP);
 
 	        out.close();
@@ -209,25 +212,48 @@ public class stats extends JPanel {
 	        e.printStackTrace();
 	    }
 	}
-	
+
 	/**
 	 * the XP you gain to level up
 	 * 
 	 * @param amount
+	 * @author SpencerS
 	 */
 	public void gainXP(int amount) {
 		currentXP += amount;
+
 		while (currentXP >= xpToLevel) {
 			currentXP -= xpToLevel;
 			level++;
 			xpToLevel += 50;
+
+			// Increase max stats
+			maxHP += 10;
+			maxAP += 20;
+
+			// Refill current HP and AP
+			currentHP = maxHP;
+			currentAP = maxAP;
+
+			// Add 20 Bottle Caps for leveling up
+			if (app != null && app.inventoryPanel != null) {
+				app.inventoryPanel.addItem("Bottle Caps", "Wasteland currency.", Inventory.Category.MISC, 20);
+				app.inventoryPanel.saveToFile();
+				
+				
+			}
 		}
+
 		updateXP();
+		updateHP();
+		updateAP();
 		saveStats();
 	}
 
 	/**
 	 * the level the player is at and the XP needed to level up
+	 * 
+	 * @author SpencerS
 	 */
 	private void updateXP() {
 		levelLabel.setText("Level: " + level);
@@ -238,30 +264,42 @@ public class stats extends JPanel {
 	/**
 	 * the damage the player takes
 	 * 
+	 * If player HP reaches zero player dies
+	 *
 	 * @param damage
+	 * @author SpencerS
 	 */
 	public void takeDamage(int damage) {
 		currentHP -= damage;
 		if (currentHP < 0)
 			currentHP = 0;
+
 		updateHP();
 		saveStats();
+
+		if (currentHP == 0) {
+			app.showYouDiedScreen();
+		}
 	}
 
 	/**
 	 * the amount of HP the player heals
 	 * 
 	 * @param amount
+	 * @author SpencerS
 	 */
 	public void heal(int amount) {
 		currentHP += amount;
 		if (currentHP > maxHP)
 			currentHP = maxHP;
 		updateHP();
+		saveStats();
 	}
 
 	/**
 	 * Updates the HP
+	 * 
+	 * @author SpencerS
 	 */
 	private void updateHP() {
 		HPLabel.setText("HP: " + currentHP + "/" + maxHP);
@@ -270,6 +308,8 @@ public class stats extends JPanel {
 	/**
 	 * Takes AP to do certain actions
 	 * 
+	 * @author SpencerS
+	 * 
 	 * @param amount
 	 * @return
 	 */
@@ -277,7 +317,6 @@ public class stats extends JPanel {
 		if (currentAP >= amount) {
 			currentAP -= amount;
 			updateAP();
-			saveStats();
 			return true;
 		}
 		return false;
@@ -286,6 +325,8 @@ public class stats extends JPanel {
 	/**
 	 * The amount the AP restores
 	 * 
+	 * @author SpencerS
+	 * 
 	 * @param amount
 	 */
 	public void restoreAP(int amount) {
@@ -293,13 +334,38 @@ public class stats extends JPanel {
 		if (currentAP > maxAP)
 			currentAP = maxAP;
 		updateAP();
-		saveStats();
 	}
 
 	/**
 	 * Updates the AP in the stats menu
+	 * 
+	 * @author SpencerS
 	 */
 	private void updateAP() {
 		APLabel.setText("AP: " + currentAP + "/" + maxAP);
 	}
+
+	/**
+	 * @author SpencerS
+	 */
+	public void resetStats() {
+		// Reset health and AP
+		
+		maxHP = 100;
+		maxAP = 100;
+		currentHP = maxHP;
+		currentAP = maxAP;
+
+		// Reset XP and level
+		currentXP = 0;
+		level = 1;
+		xpToLevel = 100;
+
+		// Update UI
+		updateHP();
+		updateAP();
+		updateXP();
+		saveStats();
+	}
+
 }
