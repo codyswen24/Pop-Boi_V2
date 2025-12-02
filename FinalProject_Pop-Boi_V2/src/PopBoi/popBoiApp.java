@@ -16,6 +16,8 @@ import java.util.Map;
  * The main method to run everything
  * 
  * @author SpencerS
+ * @author Alex Lynch
+ * @author Cody Swensen
  */
 public class popBoiApp extends JFrame {
 
@@ -23,9 +25,12 @@ public class popBoiApp extends JFrame {
 
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
-	private Inventory inventoryPanel;
-	MapScreen mapScreen = new MapScreen(this);
-	private stats statsPanel;
+	Inventory inventoryPanel;
+	stats statsPanel;
+	public Deathclaw deathclawChat;
+	public LibertyPrime libertyPrimeChat;
+	public Dogmeat dogmeat;
+	public blackJack bj;
 
 	// Store all main menu buttons so we can highlight them
 	private Map<String, JButton> buttons = new HashMap<>();
@@ -46,7 +51,9 @@ public class popBoiApp extends JFrame {
 	}
 
 	/**
-	 * 
+	 * @author SpencerS
+	 * @author Alex Lynch
+	 * @author Cody Swensen
 	 */
 	public popBoiApp() {
 		setTitle("Pop-Boi 3000");
@@ -72,10 +79,19 @@ public class popBoiApp extends JFrame {
 		mainPanel.add(inventoryPanel, "Inventory");
 		mainPanel.add(new ChatSelectionPanel(this), "ChatSelect");
 		mainPanel.add(new MapScreen(this), "Map");
-		mainPanel.add(new blackJack(this, inventoryPanel, statsPanel), "Blackjack");
-		mainPanel.add(new Deathclaw(this, statsPanel), "Deathclaw");
-		mainPanel.add(new LibertyPrime(this, statsPanel), "LibertyPrime");
-		mainPanel.add(new Dogmeat(this, inventoryPanel, statsPanel), "Dogmeat");
+		bj = new blackJack(this, inventoryPanel, statsPanel);
+		mainPanel.add(bj, "Blackjack");
+
+		deathclawChat = new Deathclaw(this, statsPanel);
+		mainPanel.add(deathclawChat, "Deathclaw");
+
+		libertyPrimeChat = new LibertyPrime(this, statsPanel);
+		mainPanel.add(libertyPrimeChat, "LibertyPrime");
+
+		dogmeat = new Dogmeat(this, inventoryPanel, statsPanel);
+		mainPanel.add(dogmeat, "Dogmeat");
+
+		mainPanel.add(new YouDIED(this), "Death");
 
 		// Add the card layout to the frame
 		add(mainPanel, BorderLayout.CENTER);
@@ -89,6 +105,7 @@ public class popBoiApp extends JFrame {
 	/**
 	 * shows the screen of the button that was clicked
 	 * 
+	 * @author SpencerS
 	 * @param name
 	 */
 	public void showScreen(String name) {
@@ -97,8 +114,18 @@ public class popBoiApp extends JFrame {
 	}
 
 	/**
+	 * show the death message when HP reaches 0
+	 * 
+	 * @author SpencerS
+	 */
+	public void showYouDiedScreen() {
+		showScreen("Death");
+	}
+
+	/**
 	 * every time the menu buttons are clicked the button that is clicked highlights
 	 * 
+	 * @author SpencerS
 	 * @param activeScreen
 	 */
 	private void highlightButton(String activeScreen) {
@@ -113,6 +140,8 @@ public class popBoiApp extends JFrame {
 
 	/**
 	 * Create top button menu
+	 * 
+	 * @author SpencerS
 	 */
 	private JPanel createMainMenu() {
 		JPanel menu = new JPanel();
@@ -131,6 +160,7 @@ public class popBoiApp extends JFrame {
 	/**
 	 * adds the menu buttons at the top of all screens
 	 * 
+	 * @author SpencerS
 	 * @param panel
 	 * @param screenName
 	 * @param label
@@ -149,4 +179,19 @@ public class popBoiApp extends JFrame {
 		buttons.put(screenName, btn);
 		panel.add(btn);
 	}
+
+	/**
+	 * resets all the chats after death
+	 * 
+	 * @author SpencerS
+	 */
+	public void resetAllChats() {
+		if (deathclawChat != null)
+			deathclawChat.resetChat();
+		if (libertyPrimeChat != null)
+			libertyPrimeChat.resetChat();
+		if (dogmeat != null)
+			dogmeat.resetChat();
+	}
+
 }
