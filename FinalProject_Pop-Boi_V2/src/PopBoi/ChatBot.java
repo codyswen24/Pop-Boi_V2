@@ -151,4 +151,14 @@ public class ChatBot extends JPanel {
 	protected String getBotName() {
 		return "Bot";
 	}
+	
+	/**
+	 * resets the chat bots history
+	 * @author SpencerS
+	 */
+	public void resetChat() {
+	    chatArea.setText(""); 
+	}
+	
+
 }
