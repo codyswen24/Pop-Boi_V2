@@ -81,6 +81,7 @@ public class blackJack extends JPanel {
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setBackground(new Color(10, 47, 10));
 		lblTitle.setForeground(Color.GREEN);
+		lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 		controlPanel.add(lblTitle);
 
 		// ------panels & labels for house ---------
