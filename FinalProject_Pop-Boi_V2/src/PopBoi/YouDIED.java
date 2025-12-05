@@ -76,6 +76,10 @@ public class YouDIED extends JPanel {
 
 			// Reset inventory
 			app.inventoryPanel.resetInventory();
+
+			// enable menu buttons
+			app.enableMenuButtons();
+
 			// Reset Chat bots
 			app.resetAllChats();
 
