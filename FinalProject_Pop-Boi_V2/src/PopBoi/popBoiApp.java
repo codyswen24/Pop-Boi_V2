@@ -100,6 +100,7 @@ public class popBoiApp extends JFrame {
 		highlightButton("MainMenu");
 
 		setVisible(true);
+
 	}
 
 	/**
@@ -120,6 +121,25 @@ public class popBoiApp extends JFrame {
 	 */
 	public void showYouDiedScreen() {
 		showScreen("Death");
+		disableMenuButtons();
+	}
+
+	/**
+	 * To disable the menu buttons
+	 * 
+	 * @author SpencerS
+	 */
+	public void disableMenuButtons() {
+		buttons.values().forEach(b -> b.setEnabled(false));
+	}
+
+	/**
+	 * To enable the menu buttons
+	 * 
+	 * @author SpencerS
+	 */
+	public void enableMenuButtons() {
+		buttons.values().forEach(b -> b.setEnabled(true));
 	}
 
 	/**
