@@ -32,8 +32,6 @@ public class blackJack extends JPanel {
 	private JButton btnHit;
 	private JButton btnStand;
 
-	Color DEFAULT_GREEN = Color.decode("#145214");
-
 	private boolean revealDealerCard = false;
 	private int currentBet = 0;
 
@@ -44,7 +42,7 @@ public class blackJack extends JPanel {
 		this.inventory = inventory;
 		this.playerStats = statsPanel;
 
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 		setLayout(new BorderLayout());
 
 		createHouseAndUserPanels();
@@ -69,7 +67,7 @@ public class blackJack extends JPanel {
 		add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(2, 0, 0, 0));
 
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 
 		// ---- creates the title for the screen -------
 		JPanel controlPanel = new JPanel();
@@ -79,7 +77,7 @@ public class blackJack extends JPanel {
 		JLabel lblTitle = new JLabel("POP-BOI BLACKJACK");
 		lblTitle.setOpaque(true);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setBackground(new Color(10, 47, 10));
+		lblTitle.setBackground(popBoiApp.BACKGROUND_GREEN);
 		lblTitle.setForeground(Color.GREEN);
 		lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 		controlPanel.add(lblTitle);
@@ -90,16 +88,16 @@ public class blackJack extends JPanel {
 		housePanel.setLayout(new BorderLayout(0, 0));
 
 		houseCardPanel = new JPanel();
-		houseCardPanel.setBackground(Color.decode("#0A2F0A"));
+		houseCardPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		housePanel.add(houseCardPanel, BorderLayout.CENTER);
 
 		JPanel statusContainer = new JPanel();
-		statusContainer.setBackground(Color.decode("#0A2F0A"));
+		statusContainer.setBackground(popBoiApp.BACKGROUND_GREEN);
 		housePanel.add(statusContainer, BorderLayout.SOUTH);
 
 		// ------status message --------
 		lblStatus = new JLabel("Bet:");
-		lblStatus.setForeground(new Color(0, 255, 0));
+		lblStatus.setForeground(Color.GREEN);
 		statusContainer.add(lblStatus);
 
 		// ------ player panels & buttons ---------
@@ -109,7 +107,7 @@ public class blackJack extends JPanel {
 
 		statusContainer.add(betField);
 		statusContainer.add(btnPlaceBet);
-		btnPlaceBet.setBackground(DEFAULT_GREEN);
+		btnPlaceBet.setBackground(popBoiApp.BUTTON_GREEN);
 		btnPlaceBet.setForeground(Color.WHITE);
 		btnPlaceBet.setFocusPainted(false);
 		btnPlaceBet.setBorderPainted(false);
@@ -123,12 +121,12 @@ public class blackJack extends JPanel {
 		playerPanel.setLayout(new BorderLayout(0, 0));
 
 		JPanel playerControls = new JPanel();
-		playerControls.setBackground(Color.decode("#0A2F0A"));
+		playerControls.setBackground(popBoiApp.BACKGROUND_GREEN);
 		playerPanel.add(playerControls, BorderLayout.SOUTH);
 
 		// ------ button to hit --------
 		btnHit = new JButton("Hit");
-		btnHit.setBackground(DEFAULT_GREEN);
+		btnHit.setBackground(popBoiApp.BUTTON_GREEN);
 		btnHit.setForeground(Color.WHITE);
 		btnHit.setFocusPainted(false);
 		btnHit.setBorderPainted(false);
@@ -141,7 +139,7 @@ public class blackJack extends JPanel {
 
 		// ------ button to stand --------
 		btnStand = new JButton("Stand");
-		btnStand.setBackground(DEFAULT_GREEN);
+		btnStand.setBackground(popBoiApp.BUTTON_GREEN);
 		btnStand.setForeground(Color.WHITE);
 		btnStand.setFocusPainted(false);
 		btnStand.setBorderPainted(false);
@@ -153,12 +151,12 @@ public class blackJack extends JPanel {
 		playerControls.add(btnStand);
 
 		playerCardPanel = new JPanel();
-		playerCardPanel.setBackground(Color.decode("#0A2F0A"));
+		playerCardPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		playerPanel.add(playerCardPanel, BorderLayout.CENTER);
 
 		// --------- money -----------
 		lblMoney = new JLabel("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
-		lblMoney.setForeground(new Color(0, 255, 0));
+		lblMoney.setForeground(Color.GREEN);
 		add(lblMoney, BorderLayout.SOUTH);
 	}
 
