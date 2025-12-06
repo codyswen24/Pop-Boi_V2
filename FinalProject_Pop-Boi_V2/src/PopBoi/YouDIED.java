@@ -25,11 +25,11 @@ public class YouDIED extends JPanel {
 
 	public YouDIED(popBoiApp app) {
 
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 		setLayout(new BorderLayout());
 
 		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.decode("#0A2F0A"));
+		centerPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 		// create image
