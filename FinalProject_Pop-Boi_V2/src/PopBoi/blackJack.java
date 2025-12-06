@@ -16,7 +16,6 @@ public class blackJack extends JPanel {
 	private stats playerStats;
 	private Inventory inventory;
 
-	// pulled from other classes
 	private deck deck;
 	private hand houseHand;
 	private hand playerHand;
@@ -69,11 +68,12 @@ public class blackJack extends JPanel {
 
 		setBackground(popBoiApp.BACKGROUND_GREEN);
 
-		// ---- creates the title for the screen -------
+		//holds the title text
 		JPanel controlPanel = new JPanel();
 		add(controlPanel, BorderLayout.NORTH);
 		controlPanel.setLayout(new GridLayout(1, 1, 0, 0));
 
+		//title text
 		JLabel lblTitle = new JLabel("POP-BOI BLACKJACK");
 		lblTitle.setOpaque(true);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,71 +82,74 @@ public class blackJack extends JPanel {
 		lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 		controlPanel.add(lblTitle);
 
-		// ------panels & labels for house ---------
+		//used to contain items on the north side of the screen
 		housePanel = new JPanel();
 		panel.add(housePanel);
 		housePanel.setLayout(new BorderLayout(0, 0));
 
+		//where the house's card sit
 		houseCardPanel = new JPanel();
 		houseCardPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		housePanel.add(houseCardPanel, BorderLayout.CENTER);
 
+		//where the status text, bet button, and bet amount sit
 		JPanel statusContainer = new JPanel();
 		statusContainer.setBackground(popBoiApp.BACKGROUND_GREEN);
 		housePanel.add(statusContainer, BorderLayout.SOUTH);
 
-		// ------status message --------
+		//status message
 		lblStatus = new JLabel("Bet:");
 		lblStatus.setForeground(Color.GREEN);
 		statusContainer.add(lblStatus);
 
-		// ------ player panels & buttons ---------
-		// ------ play button -----------
-		betField = new JTextField(5); // small box
+		//creates betting placing field/button
+		betField = new JTextField(5);
 		btnPlaceBet = new JButton("Place Bet");
-
 		statusContainer.add(betField);
 		statusContainer.add(btnPlaceBet);
 		btnPlaceBet.setBackground(popBoiApp.BUTTON_GREEN);
 		btnPlaceBet.setForeground(Color.WHITE);
 		btnPlaceBet.setFocusPainted(false);
 		btnPlaceBet.setBorderPainted(false);
+		
 		// When pressed, validate the bet and start the game
 		btnPlaceBet.addActionListener(e -> {
 			validateBet();
 		});
 
+		//contains the area and items on the south side of the screen
 		playerPanel = new JPanel();
 		panel.add(playerPanel);
 		playerPanel.setLayout(new BorderLayout(0, 0));
 
+		//contains the control buttons for the player
 		JPanel playerControls = new JPanel();
 		playerControls.setBackground(popBoiApp.BACKGROUND_GREEN);
 		playerPanel.add(playerControls, BorderLayout.SOUTH);
 
-		// ------ button to hit --------
+		//button to draw another card
 		btnHit = new JButton("Hit");
 		btnHit.setBackground(popBoiApp.BUTTON_GREEN);
 		btnHit.setForeground(Color.WHITE);
 		btnHit.setFocusPainted(false);
 		btnHit.setBorderPainted(false);
 		btnHit.addActionListener(e -> {
-
 			playerHit();
 		});
+		
 		btnHit.setEnabled(false);
 		playerControls.add(btnHit);
 
-		// ------ button to stand --------
+		//button to not draw and decide who wins
 		btnStand = new JButton("Stand");
 		btnStand.setBackground(popBoiApp.BUTTON_GREEN);
 		btnStand.setForeground(Color.WHITE);
 		btnStand.setFocusPainted(false);
 		btnStand.setBorderPainted(false);
 		btnStand.addActionListener(e -> {
-
 			playerStand();
 		});
+		
 		btnStand.setEnabled(false);
 		playerControls.add(btnStand);
 
@@ -154,7 +157,7 @@ public class blackJack extends JPanel {
 		playerCardPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		playerPanel.add(playerCardPanel, BorderLayout.CENTER);
 
-		// --------- money -----------
+		//creates the label that contains total cap amount and amount currently betting
 		lblMoney = new JLabel("Caps: " + inventory.getBottleCaps() + " Bet: " + currentBet);
 		lblMoney.setForeground(Color.GREEN);
 		add(lblMoney, BorderLayout.SOUTH);
@@ -192,6 +195,7 @@ public class blackJack extends JPanel {
 		for (int i = 0; i < houseHand.getCards().size(); i++) {
 			card c = houseHand.getCards().get(i);
 
+			//only reveals the house's first card, and shows the back side for the second card
 			if (i == 0) {
 				houseCardPanel.add(createCardLabel(c));
 			} else if (i == 1 && !revealDealerCard) {
@@ -257,6 +261,7 @@ public class blackJack extends JPanel {
 		playerHand.add(deck.drawCard());
 		playerHand.add(deck.drawCard());
 
+		//updates the UI 
 		updateUIViews();
 		lblStatus.setText("Your turn!");
 		btnHit.setEnabled(true);
@@ -271,6 +276,7 @@ public class blackJack extends JPanel {
 	 * @author Cody Swensen
 	 */
 	private void validateBet() {
+		//checks that a number is received 
 		String input = betField.getText().trim();
 		if (!input.matches("\\d+")) {
 			lblStatus.setText("Enter a valid number");
@@ -280,15 +286,18 @@ public class blackJack extends JPanel {
 		currentBet = Integer.parseInt(input);
 		int caps = inventory.getBottleCaps();
 
+		//denies a bet that is more than the user has
 		if (currentBet > caps) {
 			lblStatus.setText("Not enough Caps!");
 			return;
 		}
 
+		//denies a bet smaller than 0
 		if (currentBet <= 0) {
 			lblStatus.setText("Bet must be greater than 0");
 		}
 
+		//starts the game and temporarily removes the caps from the users inventory
 		startNewGame();
 		inventory.spendBottleCaps(currentBet);
 		updateCapsBlackjack();
@@ -309,11 +318,13 @@ public class blackJack extends JPanel {
 
 		// checks game logic
 		if (playerHand.getValue() > 21) {
+			//if cards drawn are over 21 than the player loses and losses the bet amount
+			//xp is gained and the button to bet reappears
+			lblStatus.setText("You bust! Dealer wins.");
 			revealDealerCard = true;
 			currentBet = 0;
 			playerStats.gainXP(10);
 			updateCapsBlackjack();
-			lblStatus.setText("You bust! Dealer wins.");
 			btnHit.setEnabled(false);
 			btnStand.setEnabled(false);
 			betField.setVisible(true);
@@ -340,6 +351,8 @@ public class blackJack extends JPanel {
 
 		// checks game logic
 		if (houseHand.getValue() > 21) {
+			//if dealer draws more that 21 they lose and player bet is doubled and returned
+			//more xp is gained and ui resets
 			lblStatus.setText("Dealer busts! You win!");
 			inventory.addBottleCaps(currentBet * 2);
 			currentBet = 0;
@@ -351,6 +364,8 @@ public class blackJack extends JPanel {
 			btnPlaceBet.setVisible(true);
 			betField.setText("");
 		} else if (playerHand.getValue() > houseHand.getValue()) {
+			//when player stands and hand is higher than the dealer xp is gained and the bet is doubled and returned
+			//the UI is reset
 			lblStatus.setText("You win!");
 			inventory.addBottleCaps(currentBet * 2);
 			currentBet = 0;
@@ -362,6 +377,8 @@ public class blackJack extends JPanel {
 			btnPlaceBet.setVisible(true);
 			betField.setText("");
 		} else if (playerHand.getValue() < houseHand.getValue()) {
+			//if the dealer hand is higher the bet is removed and player looses money
+			//the UI is reset
 			lblStatus.setText("Dealer wins!");
 			currentBet = 0;
 			playerStats.gainXP(10);
@@ -372,6 +389,8 @@ public class blackJack extends JPanel {
 			btnPlaceBet.setVisible(true);
 			betField.setText("");
 		} else {
+			//if both user and house have the small amount in hand bet amount is returned and moderate XP is gained
+			//UI is reset
 			lblStatus.setText("It's a tie!");
 			inventory.addBottleCaps(currentBet);
 			currentBet = 0;
@@ -396,6 +415,7 @@ public class blackJack extends JPanel {
 		houseHand = null;
 		deck = null;
 
+		//removes the card from the screen so UI looks fresh
 		houseCardPanel.removeAll();
 		playerCardPanel.removeAll();
 
