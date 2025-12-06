@@ -32,7 +32,7 @@ public class ChatBot extends JPanel {
 		this.statsPanel = statsPanel;
 
 		setLayout(new BorderLayout());
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 
 		createTitleBar();
 		createChatArea();
@@ -67,13 +67,13 @@ public class ChatBot extends JPanel {
 	 */
 	private void createTitleBar() {
 		JPanel bar = new JPanel(new BorderLayout());
-		bar.setBackground(Color.decode("#0A2F0A"));
+		bar.setBackground(popBoiApp.BACKGROUND_GREEN);
 		bar.setPreferredSize(new Dimension(0, 50));
 
 		// Title label
 		JLabel lblTitle = new JLabel(getTitle(), SwingConstants.CENTER);
 		lblTitle.setOpaque(true);
-		lblTitle.setBackground(new Color(10, 47, 10));
+		lblTitle.setBackground(popBoiApp.BACKGROUND_GREEN);
 		lblTitle.setForeground(Color.GREEN);
 		lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 
@@ -98,7 +98,7 @@ public class ChatBot extends JPanel {
 	private void createChatArea() {
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);
-		chatArea.setBackground(new Color(15, 40, 15));
+		chatArea.setBackground(popBoiApp.BACKGROUND_GREEN);
 		chatArea.setForeground(Color.GREEN);
 		chatArea.setFont(chatArea.getFont().deriveFont(14f));
 		add(new JScrollPane(chatArea), BorderLayout.CENTER);
@@ -111,10 +111,10 @@ public class ChatBot extends JPanel {
 	 */
 	private void createInputField() {
 		JPanel inputPanel = new JPanel(new BorderLayout());
-		inputPanel.setBackground(new Color(20, 60, 20));
+		inputPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 
 		inputField = new JTextField();
-		inputField.setBackground(new Color(20, 60, 20));
+		inputField.setBackground(popBoiApp.BACKGROUND_GREEN);
 		inputField.setForeground(Color.GREEN);
 		inputField.setCaretColor(Color.GREEN);
 		inputField.setPreferredSize(new Dimension(0, 40));
