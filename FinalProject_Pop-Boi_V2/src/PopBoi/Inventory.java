@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 public class Inventory extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    private stats playerStats;
+    
     private JLabel catagoryLabel;
     private JLabel descriptionLabel;
     private JList<String> itemList;
@@ -143,31 +145,6 @@ public class Inventory extends JPanel {
         return allItems.stream().filter(i -> i.name.equals(name)).findFirst().orElse(null);
     }
 
-    private void dropAmount(int amount) {
-        Item item = getSelectedItem();
-        if (item == null)
-            return;
-
-        if (amount >= item.quantity) {
-            dropAll();
-            return;
-        }
-
-        item.quantity -= amount;
-        refreshList(allItems);
-        itemList.setSelectedValue(item.toString(), true);
-    }
-
-    private void dropAll() {
-        Item item = getSelectedItem();
-        if (item == null)
-            return;
-
-        allItems.remove(item);
-        refreshList(allItems);
-        descriptionLabel.setText("Item dropped.");
-    }
-
     private void filterByCategory(Category category) {
         List<Item> filtered = allItems.stream()
                 .filter(i -> i.category == category)
@@ -183,7 +160,9 @@ public class Inventory extends JPanel {
             listModel.addElement(i.toString());
     }
 
-    public Inventory(popBoiApp app) {
+    public Inventory(popBoiApp app, stats statsPanel) {
+    	this.playerStats = statsPanel;
+    	
         setLayout(new BorderLayout(0, 0));
 
         Font newFont = new Font("Arial", Font.BOLD, 9);
@@ -411,6 +390,58 @@ public class Inventory extends JPanel {
         });
 
         dropAllBtn.addActionListener(e -> dropAll());
+        
+        useBtn.addActionListener(e -> useItem());
+    }
+    
+    private void dropAmount(int amount) {
+        Item item = getSelectedItem();
+        if (item == null)
+            return;
+
+        if (amount >= item.quantity) {
+            dropAll();
+            return;
+        }
+
+        item.quantity -= amount;
+        refreshList(allItems);
+        itemList.setSelectedValue(item.toString(), true);
+        saveToFile();
+    }
+
+    private void dropAll() {
+        Item item = getSelectedItem();
+        if (item == null)
+            return;
+
+        allItems.remove(item);
+        refreshList(allItems);
+        descriptionLabel.setText("Item dropped.");
+        saveToFile();
+    }
+    
+    /**
+     * This method adds functionality for the use button
+     * Specifically made so that stimpacks can be used to heal
+     * @author Cody Swensen
+     */
+    private void useItem() {
+        Item item = getSelectedItem();
+        if (item == null) 
+        	return;
+
+        if (item.name.equalsIgnoreCase("Stimpak")) {
+            playerStats.heal(10);
+
+            item.quantity--;
+            if (item.quantity <= 0)
+                allItems.remove(item);
+
+            refreshList(allItems);
+            descriptionLabel.setText(item.name + " used!");
+            saveToFile();
+        }
     }
 
     // ---- ADD ITEM ----
