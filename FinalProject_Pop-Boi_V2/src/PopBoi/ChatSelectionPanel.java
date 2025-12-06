@@ -18,7 +18,7 @@ public class ChatSelectionPanel extends JPanel {
 		this.app = app;
 
 		setLayout(new GridLayout(0, 1, 10, 10));
-		setBackground(new Color(15, 40, 15));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 
 		JLabel title = new JLabel("Select a ChatBot", SwingConstants.CENTER);
 		title.setForeground(Color.GREEN);
@@ -59,7 +59,7 @@ public class ChatSelectionPanel extends JPanel {
 		button.setIconTextGap(10);
 		button.addActionListener(e -> app.showScreen(panelName));
 
-		button.setBackground(new Color(0, 128, 0));
+		button.setBackground(popBoiApp.ALTERNATE_GREEN);
 		button.setForeground(Color.WHITE);
 		button.setFocusPainted(false);
 		button.setBorderPainted(false);
