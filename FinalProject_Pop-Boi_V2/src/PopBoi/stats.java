@@ -47,7 +47,7 @@ public class stats extends JPanel {
 	public stats(popBoiApp app) {
 		this.app = app;
 		// Entire panel background
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 		setLayout(new BorderLayout());
 
 		// TOP TITLE
@@ -59,7 +59,7 @@ public class stats extends JPanel {
 
 		// CENTER CONTENT
 		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.decode("#0A2F0A"));
+		centerPanel.setBackground(popBoiApp.BACKGROUND_GREEN);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -77,7 +77,7 @@ public class stats extends JPanel {
 
 		// Weapon and Armor Resistances panel
 		JPanel resistances = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-		resistances.setBackground(Color.decode("#0A2F0A"));
+		resistances.setBackground(popBoiApp.BACKGROUND_GREEN);
 
 		Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 24);
 
@@ -86,8 +86,8 @@ public class stats extends JPanel {
 			JLabel lbl = new JLabel(text, SwingConstants.CENTER);
 			lbl.setFont(emojiFont);
 			lbl.setOpaque(true);
-			lbl.setBackground(new Color(0, 128, 64));
-			lbl.setForeground(new Color(7, 222, 17));
+			lbl.setBackground(popBoiApp.ALTERNATE_GREEN);
+			lbl.setForeground(Color.GREEN);
 			lbl.setPreferredSize(new Dimension(120, 40));
 			resistances.add(lbl);
 		}
@@ -100,8 +100,8 @@ public class stats extends JPanel {
 		// Player name
 		JLabel name = new JLabel("Boolean Brotherhood", SwingConstants.CENTER);
 		name.setOpaque(true);
-		name.setBackground(Color.decode("#0A2F0A"));
-		name.setForeground(new Color(7, 222, 17));
+		name.setBackground(popBoiApp.BACKGROUND_GREEN);
+		name.setForeground(Color.GREEN);
 		name.setPreferredSize(new Dimension(220, 30));
 		name.setMaximumSize(name.getPreferredSize());
 		name.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -112,7 +112,7 @@ public class stats extends JPanel {
 		// BOTTOM STATUS BAR
 		JPanel bottomBar = new JPanel();
 		bottomBar.setLayout(new GridBagLayout());
-		bottomBar.setBackground(new Color(0, 60, 0));
+		bottomBar.setBackground(popBoiApp.BACKGROUND_GREEN);
 		add(bottomBar, BorderLayout.SOUTH);
 
 		GridBagConstraints bbc = new GridBagConstraints();
@@ -121,8 +121,8 @@ public class stats extends JPanel {
 		// HP Label
 		HPLabel = new JLabel("HP: " + currentHP + "/" + maxHP, SwingConstants.CENTER);
 		HPLabel.setOpaque(true);
-		HPLabel.setBackground(new Color(0, 128, 64));
-		HPLabel.setForeground(new Color(7, 222, 17));
+		HPLabel.setBackground(popBoiApp.ALTERNATE_GREEN);
+		HPLabel.setForeground(Color.GREEN);
 		HPLabel.setPreferredSize(new Dimension(120, 30));
 		bbc.gridx = 0;
 		bottomBar.add(HPLabel, bbc);
@@ -130,8 +130,8 @@ public class stats extends JPanel {
 		// Level Label
 		levelLabel = new JLabel("Level: " + level, SwingConstants.CENTER);
 		levelLabel.setOpaque(true);
-		levelLabel.setBackground(new Color(0, 128, 64));
-		levelLabel.setForeground(new Color(7, 222, 17));
+		levelLabel.setBackground(popBoiApp.ALTERNATE_GREEN);
+		levelLabel.setForeground(Color.GREEN);
 		levelLabel.setPreferredSize(new Dimension(100, 30));
 		bbc.gridx = 1;
 		bottomBar.add(levelLabel, bbc);
@@ -139,18 +139,19 @@ public class stats extends JPanel {
 		// XP Bar
 		xpBar = new JProgressBar(0, xpToLevel);
 		xpBar.setValue(currentXP);
-		xpBar.setForeground(new Color(0, 200, 0));
-		xpBar.setBackground(new Color(0, 100, 50));
+		xpBar.setForeground(Color.GREEN);
+		xpBar.setBackground(popBoiApp.ALTERNATE_GREEN);
 		xpBar.setBorderPainted(false);
 		xpBar.setPreferredSize(new Dimension(300, 30));
 		bbc.gridx = 2;
+
 		bottomBar.add(xpBar, bbc);
 
 		// AP Label
 		APLabel = new JLabel("AP: " + currentAP + "/" + maxAP, SwingConstants.CENTER);
 		APLabel.setOpaque(true);
-		APLabel.setBackground(new Color(0, 128, 64));
-		APLabel.setForeground(new Color(7, 222, 17));
+		APLabel.setBackground(popBoiApp.ALTERNATE_GREEN);
+		APLabel.setForeground(Color.GREEN);
 		APLabel.setPreferredSize(new Dimension(120, 30));
 		bbc.gridx = 3;
 		bottomBar.add(APLabel, bbc);
