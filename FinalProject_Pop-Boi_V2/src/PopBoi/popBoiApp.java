@@ -74,7 +74,7 @@ public class popBoiApp extends JFrame {
 
 		// Create single instances of stats and inventory
 		statsPanel = new stats(this);
-		inventoryPanel = new Inventory(this);
+		inventoryPanel = new Inventory(this, statsPanel);
 
 		// Add screens using the same instances
 		mainPanel.add(statsPanel, "MainMenu");
