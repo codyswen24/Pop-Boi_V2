@@ -35,9 +35,11 @@ public class popBoiApp extends JFrame {
 	// Store all main menu buttons so we can highlight them
 	private Map<String, JButton> buttons = new HashMap<>();
 
-	// Default + Highlight colors
-	private final Color DEFAULT_COLOR = Color.decode("#145214");
-	private final Color HIGHLIGHT_COLOR = Color.decode("#2AFF2A");
+	// color palette
+	public static final Color BACKGROUND_GREEN = Color.decode("#0A2F0A");
+	public static final Color BUTTON_GREEN = Color.decode("#145214");
+	public static final Color HIGHLIGHT_GREEN = Color.decode("#2AFF2A");
+	public static final Color ALTERNATE_GREEN = Color.decode("#008040");
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -151,9 +153,9 @@ public class popBoiApp extends JFrame {
 	private void highlightButton(String activeScreen) {
 		buttons.forEach((screenName, button) -> {
 			if (screenName.equals(activeScreen)) {
-				button.setBackground(HIGHLIGHT_COLOR);
+				button.setBackground(HIGHLIGHT_GREEN);
 			} else {
-				button.setBackground(DEFAULT_COLOR);
+				button.setBackground(BUTTON_GREEN);
 			}
 		});
 	}
@@ -165,7 +167,7 @@ public class popBoiApp extends JFrame {
 	 */
 	private JPanel createMainMenu() {
 		JPanel menu = new JPanel();
-		menu.setBackground(Color.decode("#0F3D0F"));
+		menu.setBackground(BACKGROUND_GREEN);
 		menu.setLayout(new GridLayout(1, 5, 5, 0));
 
 		addMenuButton(menu, "MainMenu", "Stats");
@@ -187,7 +189,7 @@ public class popBoiApp extends JFrame {
 	 */
 	private void addMenuButton(JPanel panel, String screenName, String label) {
 		JButton btn = new JButton(label);
-		btn.setBackground(DEFAULT_COLOR);
+		btn.setBackground(BUTTON_GREEN);
 		btn.setForeground(Color.WHITE);
 
 		btn.setFocusPainted(false);
