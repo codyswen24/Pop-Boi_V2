@@ -23,14 +23,15 @@ public class MapScreen extends JPanel {
 	 * @param app
 	 */
 	public MapScreen(popBoiApp app) {
-		setBackground(Color.decode("#0A2F0A"));
+		setBackground(popBoiApp.BACKGROUND_GREEN);
 		setLayout(new BorderLayout());
 
 		// Title at the top
 		JLabel title = new JLabel("POP-BOI MAP", SwingConstants.CENTER);
 		title.setOpaque(true);
+		title.setBackground(popBoiApp.BACKGROUND_GREEN);
 		title.setForeground(Color.GREEN);
-		title.setBackground(Color.decode("#0A2F0A"));
+		title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
 		title.setVerticalAlignment(SwingConstants.TOP);
 		add(title, BorderLayout.NORTH);
 
@@ -72,11 +73,9 @@ public class MapScreen extends JPanel {
 		JButton btnMinus = new JButton("-");
 		JButton btnPlus = new JButton("+");
 
-		Color DEFAULT_GREEN = Color.decode("#145214");
-
-		btnMinus.setBackground(DEFAULT_GREEN);
+		btnMinus.setBackground(popBoiApp.BACKGROUND_GREEN);
 		btnMinus.setForeground(Color.WHITE);
-		btnPlus.setBackground(DEFAULT_GREEN);
+		btnPlus.setBackground(popBoiApp.BACKGROUND_GREEN);
 		btnPlus.setForeground(Color.WHITE);
 
 		btnMinus.setFocusPainted(false);
