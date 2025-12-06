@@ -21,10 +21,6 @@ public class Inventory extends JPanel {
     private Map<String, JButton> categoryButtons = new HashMap<>();
     
     private static final String SAVE_FILE_INVENTORY = "inventory.txt";
-    
-    Color DEFAULT_GREEN = Color.decode("#145214");
-    private final Color DEFAULT_COLOR = Color.decode("#145214");
-	private final Color HIGHLIGHT_COLOR = Color.decode("#2AFF2A");
 
     public enum Category {
         WEAPON, APPERAL, AID, MISC
@@ -54,9 +50,9 @@ public class Inventory extends JPanel {
     private void highlightCategoryButton(String active) {
         categoryButtons.forEach((name, button) -> {
             if (name.equals(active)) {
-                button.setBackground(HIGHLIGHT_COLOR);
+                button.setBackground(popBoiApp.HIGHLIGHT_GREEN);
             } else {
-                button.setBackground(DEFAULT_COLOR);
+                button.setBackground(popBoiApp.BUTTON_GREEN);
             }
         });
     }
@@ -194,18 +190,18 @@ public class Inventory extends JPanel {
 
         JPanel filterButton = new JPanel();
         add(filterButton, BorderLayout.NORTH);
-        filterButton.setBackground(Color.decode("#0F3D0F"));
+        filterButton.setBackground(popBoiApp.BACKGROUND_GREEN);
         filterButton.setLayout(new GridLayout(2, 0, 0, 0));
 
         JLabel lblNewLabel = new JLabel("Pop-Boi Inventory", SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.GREEN);
-        lblNewLabel.setBackground(Color.decode("#0A2F0A"));
+        lblNewLabel.setBackground(popBoiApp.BACKGROUND_GREEN);
         lblNewLabel.setOpaque(false);
         lblNewLabel.setFont(lblNewLabel.getFont().deriveFont(Font.BOLD, 18f));
         filterButton.add(lblNewLabel);
 
         JPanel panel_1 = new JPanel();
-        panel_1.setBackground(Color.decode("#0F3D0F"));
+        panel_1.setBackground(popBoiApp.BACKGROUND_GREEN);
         filterButton.add(panel_1);
         panel_1.setLayout(new GridLayout(1, 0, 0, 0));
 
@@ -213,7 +209,7 @@ public class Inventory extends JPanel {
         
         JButton allButton = new JButton("All");
         panel_1.add(allButton);
-        allButton.setBackground(HIGHLIGHT_COLOR);
+        allButton.setBackground(popBoiApp.HIGHLIGHT_GREEN);
         allButton.setForeground(Color.WHITE);
         allButton.setFont(newFont);
         allButton.setBorderPainted(false);
@@ -229,7 +225,7 @@ public class Inventory extends JPanel {
 
         JButton weaponBtn = new JButton("Weapon");
         panel_1.add(weaponBtn);
-        weaponBtn.setBackground(DEFAULT_COLOR);
+        weaponBtn.setBackground(popBoiApp.BUTTON_GREEN);
         weaponBtn.setForeground(Color.WHITE);
         weaponBtn.setFont(newFont);
         weaponBtn.setBorderPainted(false);
@@ -243,7 +239,7 @@ public class Inventory extends JPanel {
 
         JButton apparelBtn = new JButton("Apparel");
         panel_1.add(apparelBtn);
-        apparelBtn.setBackground(DEFAULT_COLOR);
+        apparelBtn.setBackground(popBoiApp.BUTTON_GREEN);
         apparelBtn.setForeground(Color.WHITE);
         apparelBtn.setFont(newFont);
         apparelBtn.setBorderPainted(false);
@@ -257,7 +253,7 @@ public class Inventory extends JPanel {
 
         JButton aidBtn = new JButton("Aid");
         panel_1.add(aidBtn);
-        aidBtn.setBackground(DEFAULT_COLOR);
+        aidBtn.setBackground(popBoiApp.BUTTON_GREEN);
         aidBtn.setForeground(Color.WHITE);
         aidBtn.setFont(newFont);
         aidBtn.setBorderPainted(false);
@@ -271,7 +267,7 @@ public class Inventory extends JPanel {
 
         JButton miscBtn = new JButton("Misc");
         panel_1.add(miscBtn);
-        miscBtn.setBackground(DEFAULT_COLOR);
+        miscBtn.setBackground(popBoiApp.BUTTON_GREEN);
         miscBtn.setForeground(Color.WHITE);
         miscBtn.setFont(newFont);
         miscBtn.setBorderPainted(false);
@@ -287,8 +283,8 @@ public class Inventory extends JPanel {
         listModel = new DefaultListModel<>();
         itemList = new JList<>(listModel);
         itemList.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        itemList.setBackground(Color.decode("#0F3D0F"));
-        itemList.setForeground(new Color(7, 222, 17));
+        itemList.setBackground(popBoiApp.BACKGROUND_GREEN);
+        itemList.setForeground(Color.GREEN);
      
         loadItems();
         refreshList(allItems);
@@ -296,7 +292,7 @@ public class Inventory extends JPanel {
         // ----- MAIN PANEL -----
         JPanel main = new JPanel();
         add(main, BorderLayout.CENTER);
-        main.setBackground(Color.decode("#0F3D0F"));
+        main.setBackground(popBoiApp.BACKGROUND_GREEN);
         main.setLayout(new GridLayout(1, 4, 0, 0));
 
         main.add(itemList);
@@ -315,13 +311,13 @@ public class Inventory extends JPanel {
         // ----- RIGHT PANEL -----
         JPanel infoPanel = new JPanel();
         main.add(infoPanel);
-        infoPanel.setBackground(Color.decode("#0A2F0A"));
+        infoPanel.setBackground(popBoiApp.ALTERNATE_GREEN);
         infoPanel.setLayout(new BorderLayout(0, 0));
 
         JLabel Catagory = new JLabel("Showing all");
-        Catagory.setBorder(BorderFactory.createLineBorder(DEFAULT_COLOR, 1));
+        Catagory.setBorder(BorderFactory.createLineBorder(popBoiApp.BACKGROUND_GREEN, 1));
         Catagory.setHorizontalAlignment(SwingConstants.CENTER);
-        Catagory.setBackground(new Color(0, 128, 64));
+        Catagory.setBackground(popBoiApp.ALTERNATE_GREEN);
         Catagory.setForeground(Color.GREEN);
         Catagory.setOpaque(true);
         infoPanel.add(Catagory, BorderLayout.NORTH);
@@ -329,11 +325,10 @@ public class Inventory extends JPanel {
         catagoryLabel = Catagory;
         
         JLabel des = new JLabel("No item selected.", SwingConstants.CENTER);
-        des.setBorder(BorderFactory.createLineBorder(DEFAULT_COLOR, 1));
-        des.setBackground(Color.decode("#0A2F0A"));
+        des.setBorder(BorderFactory.createLineBorder(popBoiApp.BACKGROUND_GREEN, 1));
+        des.setBackground(popBoiApp.ALTERNATE_GREEN);
         des.setForeground(Color.GREEN);
         des.setOpaque(true);
-        des.setBackground(new Color(0, 128, 64));
         infoPanel.add(des, BorderLayout.CENTER);
 
         // FIX: descriptionLabel was never initialized
@@ -341,7 +336,7 @@ public class Inventory extends JPanel {
 
         // ----- DROP BUTTONS -----
         JPanel buttons = new JPanel();
-        buttons.setBackground(Color.decode("#0A2F0A"));
+        buttons.setBackground(popBoiApp.ALTERNATE_GREEN);
         infoPanel.add(buttons, BorderLayout.SOUTH);
         GridBagLayout gbl_buttons = new GridBagLayout();
         gbl_buttons.columnWidths = new int[]{89, 0, 0, 0, 0, 0, 0, 0, 89, 0, 0, 0};
@@ -352,7 +347,7 @@ public class Inventory extends JPanel {
 
         JButton drop1Btn = new JButton("Drop 1");
         GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        drop1Btn.setBackground(DEFAULT_COLOR);
+        drop1Btn.setBackground(popBoiApp.BUTTON_GREEN);
         drop1Btn.setForeground(Color.WHITE);
         drop1Btn.setBorderPainted(false);
         drop1Btn.setFocusPainted(false);
@@ -365,7 +360,7 @@ public class Inventory extends JPanel {
 
         JButton dropXBtn = new JButton("Drop x");
         GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-        dropXBtn.setBackground(DEFAULT_COLOR);
+        dropXBtn.setBackground(popBoiApp.BUTTON_GREEN);
         dropXBtn.setForeground(Color.WHITE);
         dropXBtn.setBorderPainted(false);
         dropXBtn.setFocusPainted(false);
@@ -378,7 +373,7 @@ public class Inventory extends JPanel {
 
         JButton useBtn = new JButton("Use");
         GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-        useBtn.setBackground(DEFAULT_COLOR);
+        useBtn.setBackground(popBoiApp.BUTTON_GREEN);
         useBtn.setForeground(Color.WHITE);
         useBtn.setBorderPainted(false);
         useBtn.setFocusPainted(false);
@@ -391,7 +386,7 @@ public class Inventory extends JPanel {
 
         JButton dropAllBtn = new JButton("Drop All");
         GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-        dropAllBtn.setBackground(DEFAULT_COLOR);
+        dropAllBtn.setBackground(popBoiApp.BUTTON_GREEN);
         dropAllBtn.setForeground(Color.WHITE);
         dropAllBtn.setBorderPainted(false);
         dropAllBtn.setFocusPainted(false);
