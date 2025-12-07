@@ -73,9 +73,9 @@ public class MapScreen extends JPanel {
 		JButton btnMinus = new JButton("-");
 		JButton btnPlus = new JButton("+");
 
-		btnMinus.setBackground(popBoiApp.BACKGROUND_GREEN);
+		btnMinus.setBackground(popBoiApp.BUTTON_GREEN);
 		btnMinus.setForeground(Color.WHITE);
-		btnPlus.setBackground(popBoiApp.BACKGROUND_GREEN);
+		btnPlus.setBackground(popBoiApp.BUTTON_GREEN);
 		btnPlus.setForeground(Color.WHITE);
 
 		btnMinus.setFocusPainted(false);
