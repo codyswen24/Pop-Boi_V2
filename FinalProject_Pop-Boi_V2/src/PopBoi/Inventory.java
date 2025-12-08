@@ -193,7 +193,8 @@ public class Inventory extends JPanel {
 	}
 
 	/**
-	 * 
+	 * This method is used to refresh the items in the list 
+	 *
 	 * @author Alex Lynch
 	 * @param items
 	 */
@@ -631,4 +632,5 @@ public class Inventory extends JPanel {
 
 	}
 }
+
 
