@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * This method is used to show the user what items they have and how they can interact with those items
+ * it can also be updated from the other JPanels to add to the inventory.
+ *
  * @author Alex Lynch
  * @author SpencerS
  * @author Cody Swensen
@@ -30,6 +33,7 @@ public class Inventory extends JPanel {
 	private static final String SAVE_FILE_INVENTORY = "inventory.txt";
 
 	/**
+	 * This is the enum that holds the Categorys for the buttons
 	 * @author Alex Lynch
 	 */
 	public enum Category {
@@ -37,6 +41,7 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * this class is used to define each of the items
 	 * @author Alex Lynch
 	 */
 	private class Item {
@@ -53,6 +58,7 @@ public class Inventory extends JPanel {
 		}
 
 		/**
+		 * This is used to update and show the name and how much of an item you have
 		 * @author Alex Lynch
 		 */
 		@Override
@@ -64,6 +70,7 @@ public class Inventory extends JPanel {
 	private final List<Item> allItems = new ArrayList<>();
 
 	/**
+	 * This is just used to update the looks of the category buttons
 	 * @author Alex Lynch
 	 * @param active
 	 */
@@ -158,6 +165,7 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * This is how you get the item information when its cliked on
 	 * @author Alex Lynch
 	 * @return
 	 */
@@ -172,6 +180,8 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * This method is used to update the decription panel when a button is selcted the list will show items related to the selected category
+	 *
 	 * @author Alex Lynch
 	 * @param category
 	 */
@@ -183,6 +193,7 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * 
 	 * @author Alex Lynch
 	 * @param items
 	 */
@@ -193,6 +204,8 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * This meathod is used to make all the GUI theme match the other JPanels
+	 *
 	 * @author Alex Lynch
 	 * @param app
 	 * @param statsPanel
@@ -220,7 +233,7 @@ public class Inventory extends JPanel {
 		panel_1.setBackground(popBoiApp.BACKGROUND_GREEN);
 		filterButton.add(panel_1);
 		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
-
+		
 		// ----- CATEGORY BUTTONS -----
 
 		JButton allButton = new JButton("All");
@@ -303,6 +316,8 @@ public class Inventory extends JPanel {
 		loadItems();
 		refreshList(allItems);
 
+		//This is the left panel that shows you all your items and how much of them you have
+		
 		// ----- MAIN PANEL -----
 		JPanel main = new JPanel();
 		add(main, BorderLayout.CENTER);
@@ -321,7 +336,8 @@ public class Inventory extends JPanel {
 					descriptionLabel.setText("No item selected");
 			}
 		});
-
+		// These are the category buttons that allow you to filter your item list to show only the items under each category
+		
 		// ----- RIGHT PANEL -----
 		JPanel infoPanel = new JPanel();
 		main.add(infoPanel);
@@ -345,9 +361,10 @@ public class Inventory extends JPanel {
 		des.setOpaque(true);
 		infoPanel.add(des, BorderLayout.CENTER);
 
-		// FIX: descriptionLabel was never initialized
 		descriptionLabel = des;
 
+		// These are the drop buttons and the use button that can be used to interact with the items to drop or use them
+		
 		// ----- DROP BUTTONS -----
 		JPanel buttons = new JPanel();
 		buttons.setBackground(popBoiApp.ALTERNATE_GREEN);
@@ -409,7 +426,9 @@ public class Inventory extends JPanel {
 		gbc_btnNewButton_3.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_3.anchor = GridBagConstraints.NORTHWEST;
 		buttons.add(dropAllBtn, gbc_btnNewButton_3);
-
+		
+		//This is what is used to drop items from the inventory used by the drop buttons
+		
 		// ----- DROP LOGIC -----
 		drop1Btn.addActionListener(e -> dropAmount(1));
 
@@ -431,6 +450,9 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * This method is used for the drop button "Drop x" that allows the user to say how much of an item the want to drop and then 
+	 * remove that amount from the inventory.
+	 *
 	 * @author Alex Lynch
 	 * @param amount
 	 */
@@ -451,6 +473,8 @@ public class Inventory extends JPanel {
 	}
 
 	/**
+	 * This method is used to drop all of an item using the "Drop All" button removing all of the item selected
+	 *
 	 * @author Alex Lynch
 	 */
 	private void dropAll() {
@@ -607,3 +631,4 @@ public class Inventory extends JPanel {
 
 	}
 }
+
